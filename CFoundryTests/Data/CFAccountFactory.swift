@@ -1,5 +1,5 @@
 import Foundation
-import SwiftyJSON
+import ObjectMapper
 
 @testable import CFoundry
 
@@ -13,8 +13,11 @@ class CFAccountFactory {
         let bundle = Bundle.init(for: CFAccountFactory.self)
         let path = bundle.path(forResource: "info", ofType: "json")
         let data = NSData(contentsOfFile: path!)
-        let json = JSON(data: data! as Data)
-        return CFInfo(json: json)
+        let json = try! JSONSerialization.jsonObject(with: data! as Data, options: JSONSerialization.ReadingOptions.allowFragments)
+        
+        let info = try! Mapper<CFInfo>().mapDictionary(JSONObject: json)
+        
+        return info[""]!
     }
     
     class func account() -> CFAccount {

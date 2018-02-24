@@ -1,6 +1,7 @@
 import Foundation
 import Locksmith
 import SwiftyJSON
+import ObjectMapper
 
 // Accounts are stored in the Keychain.
 // Reference to those accounts are stored in NSUserDefaults.
@@ -28,14 +29,15 @@ public class CFAccountStore {
     
     class func read(_ key: String) -> CFAccount? {
         if let data = Locksmith.loadDataForUserAccount(userAccount: key, inService: "CloudFoundry") {
-            let json = JSON(data["info"]!)
-            
-            return CFAccount(
-                target: data["target"] as! String,
-                username: data["username"] as! String,
-                password: data["password"] as! String,
-                info: CFInfo(json: json)
-            )
+            let json = data["info"] as! [String : String]
+            if let info = try? Mapper<CFInfo>().map(JSON: json) {
+                return CFAccount(
+                    target: data["target"] as! String,
+                    username: data["username"] as! String,
+                    password: data["password"] as! String,
+                    info: info
+                )
+            }
         }
         return nil
     }

@@ -1,10 +1,40 @@
 import Foundation
-import SwiftyJSON
+import ObjectMapper
 
-public struct CFInfo {
-    let json: JSON
+public class CFInfo: ImmutableMappable {
+    var support: String
+    var description: String
+    var tokenEndpoint: String
+    var authEndpoint: String
+    var apiVersion: String
+    var appSSHEndpoint: String
+    var appSSHHostKeyFingerprint: String
+    var appSSHOAuthClient: String
+    var dopplerLoggingEndpoint: String
     
-    public init(json: JSON) { self.json = json }
+    public required init(map: Map) throws {
+        support = try map.value("support")
+        description = try map.value("description")
+        tokenEndpoint = try map.value("token_endpoint")
+        authEndpoint = try map.value("authorization_endpoint")
+        apiVersion = try map.value("api_version")
+        appSSHEndpoint = try map.value("app_ssh_endpoint")
+        appSSHHostKeyFingerprint = try map.value("app_ssh_host_key_fingerprint")
+        appSSHOAuthClient = try map.value("app_ssh_oauth_client")
+        dopplerLoggingEndpoint = try map.value("doppler_logging_endpoint")
+    }
+    
+    public func mapping(map: Map) {
+        support <- map["support"]
+        description <- map["description"]
+        tokenEndpoint <- map["token_endpoint"]
+        authEndpoint <- map["authorization_endpoint"]
+        apiVersion <- map["api_version"]
+        appSSHEndpoint <- map["app_ssh_endpoint"]
+        appSSHHostKeyFingerprint <- map["app_ssh_host_key_fingerprint"]
+        appSSHOAuthClient <- map["app_ssh_oauth_client"]
+        dopplerLoggingEndpoint <- map["doppler_logging_endpoint"]
+    }
     
     public struct Keys {
       static let support = "support"
@@ -18,50 +48,6 @@ public struct CFInfo {
       static let loggingEndpoint = "logging_endpoint"
       static let dopplerLoggingEndpoint = "doppler_logging_endpoint"
     }
-
-    var support: String {
-        return getStringValue(Keys.support)
-    }
-    
-    var description: String {
-        return getStringValue(Keys.description)
-    }
-    
-    var tokenEndpoint: String {
-        return getStringValue(Keys.tokenEndpoint)
-    }
-    
-    public var authEndpoint: String {
-        return getStringValue(Keys.authEndpoint)
-    }
-    
-    var apiVersion: String {
-        return getStringValue(Keys.apiVersion)
-    }
-    
-    var appSSHEndpoint: String {
-        return getStringValue(Keys.appSSHEndpoint)
-    }
-    
-    var appSSHHostKeyFingerprint: String {
-        return getStringValue(Keys.appSSHHostKeyFingerprint)
-    }
-    
-    var appSSHOAuthClient: String {
-        return getStringValue(Keys.appSSHOAuthClient)
-    }
-    
-    var loggingEndpoint: String {
-        return getStringValue(Keys.loggingEndpoint)
-    }
-    
-    var dopplerLoggingEndpoint: String {
-        return getStringValue(Keys.dopplerLoggingEndpoint)
-    }
-    
-    fileprivate func getStringValue(_ key: String) -> String {
-        return json[key].stringValue
-    }
     
     func serialize() -> [String : String] {
         return [
@@ -73,7 +59,6 @@ public struct CFInfo {
             Keys.appSSHEndpoint : appSSHEndpoint,
             Keys.appSSHHostKeyFingerprint : appSSHHostKeyFingerprint,
             Keys.appSSHOAuthClient : appSSHOAuthClient,
-            Keys.loggingEndpoint : loggingEndpoint,
             Keys.dopplerLoggingEndpoint : dopplerLoggingEndpoint
         ]
     }

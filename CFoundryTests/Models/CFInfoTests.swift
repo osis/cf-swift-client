@@ -1,18 +1,13 @@
 import Foundation
 import XCTest
-import SwiftyJSON
 
 @testable import CFoundry
 
-class CFInfoTests: XCTestCase {
+class CFInfoTests: CFModelTestBase {
     var info: CFInfo?
 
     override func setUp() {
-        let path = Bundle(for: type(of: self)).path(forResource: "info", ofType: "json")
-        let data = NSData(contentsOfFile: path!)
-        let json = JSON(data: data! as Data)
-
-        self.info = CFInfo(json: json)
+        info = localResponseObject(t: CFInfo.self, name: "info")
     }
 
     func testProperties() {
@@ -26,7 +21,6 @@ class CFInfoTests: XCTestCase {
             XCTAssertEqual(info.appSSHEndpoint, "ssh.test.io:2222")
             XCTAssertEqual(info.appSSHHostKeyFingerprint, "11:22:33:44:55:66:77:88:99:00:a1:a2:a3")
             XCTAssertEqual(info.appSSHOAuthClient, "ssh-proxy")
-            XCTAssertEqual(info.loggingEndpoint, "wss://loggregator.test.io:443")
             XCTAssertEqual(info.dopplerLoggingEndpoint, "wss://doppler.test.io:443")
         } else {
             XCTFail()
@@ -44,7 +38,6 @@ class CFInfoTests: XCTestCase {
                 "app_ssh_endpoint" : "ssh.test.io:2222",
                 "app_ssh_host_key_fingerprint" : "11:22:33:44:55:66:77:88:99:00:a1:a2:a3",
                 "app_ssh_oauth_client" : "ssh-proxy",
-                "logging_endpoint" : "wss://loggregator.test.io:443",
                 "doppler_logging_endpoint" : "wss://doppler.test.io:443"
             ])
         } else {
