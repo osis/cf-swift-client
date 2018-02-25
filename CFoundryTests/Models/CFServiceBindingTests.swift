@@ -3,13 +3,13 @@ import XCTest
 
 @testable import CFoundry
 
-class ServiceTests: CFModelTestBase {
-    var serviceBinding: ServiceBinding?
+class CFServiceBindingTests: CFModelTestBase {
+    var serviceBinding: CFServiceBinding?
     
     override func setUp() {
         super.setUp()
         
-        serviceBinding = localResponseArray(t: ServiceBinding.self, name: "app_summary", keyPath: "services")[0]
+        serviceBinding = localResponseArray(t: CFServiceBinding.self, name: "app_summary", keyPath: "services")[0]
     }
     
     func testName() {

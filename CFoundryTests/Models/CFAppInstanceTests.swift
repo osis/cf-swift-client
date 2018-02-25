@@ -3,13 +3,13 @@ import XCTest
 
 @testable import CFoundry
 
-class InstanceTests: CFModelTestBase {
-    var instance: Instance?
+class CFAppInstanceTests: CFModelTestBase {
+    var instance: CFAppInstance?
     
     override func setUp() {
         super.setUp()
         
-        instance = localResponseObject(t: Instance.self, name: "app_stats", keyPath: "0")
+        instance = localResponseObject(t: CFAppInstance.self, name: "app_stats", keyPath: "0")
     }
     
     func testURIs() {

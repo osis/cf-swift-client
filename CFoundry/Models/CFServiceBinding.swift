@@ -1,7 +1,7 @@
 import Foundation
 import ObjectMapper
 
-public class ServiceBinding: ImmutableMappable {
+public class CFServiceBinding: ImmutableMappable {
     var name: String
     var planName: String
     var serviceLabel: String

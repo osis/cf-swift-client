@@ -23,13 +23,13 @@
 		656D167820309652002B1905 /* CFAccountStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D167620309652002B1905 /* CFAccountStoreTests.swift */; };
 		656D167B203096A2002B1905 /* CFAccountFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D167A203096A2002B1905 /* CFAccountFactory.swift */; };
 		656D168120309AD9002B1905 /* LogMessageStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168020309AD9002B1905 /* LogMessageStringTests.swift */; };
-		656D168320309CA2002B1905 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168220309CA2002B1905 /* Service.swift */; };
+		656D168320309CA2002B1905 /* CFServiceBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168220309CA2002B1905 /* CFServiceBinding.swift */; };
 		656D168C20309D64002B1905 /* CFEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168520309D63002B1905 /* CFEventTests.swift */; };
 		656D168D20309D64002B1905 /* CFInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168620309D63002B1905 /* CFInfoTests.swift */; };
 		656D168E20309D64002B1905 /* CFOrgTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168720309D63002B1905 /* CFOrgTests.swift */; };
-		656D168F20309D64002B1905 /* ServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168820309D63002B1905 /* ServiceTests.swift */; };
+		656D168F20309D64002B1905 /* CFServiceBindingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168820309D63002B1905 /* CFServiceBindingTests.swift */; };
 		656D169020309D64002B1905 /* CFAppsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168920309D64002B1905 /* CFAppsTests.swift */; };
-		656D169120309D64002B1905 /* InstanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168A20309D64002B1905 /* InstanceTests.swift */; };
+		656D169120309D64002B1905 /* CFAppInstanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168A20309D64002B1905 /* CFAppInstanceTests.swift */; };
 		656D169220309D64002B1905 /* CFSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168B20309D64002B1905 /* CFSpaceTests.swift */; };
 		656D16942030A14C002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
 		656D16952030A5F0002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
@@ -39,7 +39,7 @@
 		658EAC47202FDC5F00933176 /* CFOrg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC41202FDC5F00933176 /* CFOrg.swift */; };
 		658EAC48202FDC5F00933176 /* CFSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC42202FDC5F00933176 /* CFSpace.swift */; };
 		658EAC49202FDC5F00933176 /* CFApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC43202FDC5F00933176 /* CFApp.swift */; };
-		658EAC4A202FDC5F00933176 /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC44202FDC5F00933176 /* Instance.swift */; };
+		658EAC4A202FDC5F00933176 /* CFAppInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC44202FDC5F00933176 /* CFAppInstance.swift */; };
 		658EAC59202FDC9B00933176 /* Events.Envelope.proto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC53202FDC9A00933176 /* Events.Envelope.proto.swift */; };
 		658EAC5A202FDC9B00933176 /* Events.Error.proto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC54202FDC9A00933176 /* Events.Error.proto.swift */; };
 		658EAC5B202FDC9B00933176 /* Events.Log.proto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC55202FDC9A00933176 /* Events.Log.proto.swift */; };
@@ -106,13 +106,13 @@
 		656D167620309652002B1905 /* CFAccountStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAccountStoreTests.swift; sourceTree = "<group>"; };
 		656D167A203096A2002B1905 /* CFAccountFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAccountFactory.swift; sourceTree = "<group>"; };
 		656D168020309AD9002B1905 /* LogMessageStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogMessageStringTests.swift; sourceTree = "<group>"; };
-		656D168220309CA2002B1905 /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		656D168220309CA2002B1905 /* CFServiceBinding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFServiceBinding.swift; sourceTree = "<group>"; };
 		656D168520309D63002B1905 /* CFEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFEventTests.swift; sourceTree = "<group>"; };
 		656D168620309D63002B1905 /* CFInfoTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFInfoTests.swift; sourceTree = "<group>"; };
 		656D168720309D63002B1905 /* CFOrgTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFOrgTests.swift; sourceTree = "<group>"; };
-		656D168820309D63002B1905 /* ServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceTests.swift; sourceTree = "<group>"; };
+		656D168820309D63002B1905 /* CFServiceBindingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFServiceBindingTests.swift; sourceTree = "<group>"; };
 		656D168920309D64002B1905 /* CFAppsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAppsTests.swift; sourceTree = "<group>"; };
-		656D168A20309D64002B1905 /* InstanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstanceTests.swift; sourceTree = "<group>"; };
+		656D168A20309D64002B1905 /* CFAppInstanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAppInstanceTests.swift; sourceTree = "<group>"; };
 		656D168B20309D64002B1905 /* CFSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFSpaceTests.swift; sourceTree = "<group>"; };
 		656D16932030A14C002B1905 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		658EAC0C202FCA8200933176 /* CFoundry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFoundry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,7 +128,7 @@
 		658EAC41202FDC5F00933176 /* CFOrg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFOrg.swift; sourceTree = "<group>"; };
 		658EAC42202FDC5F00933176 /* CFSpace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFSpace.swift; sourceTree = "<group>"; };
 		658EAC43202FDC5F00933176 /* CFApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFApp.swift; sourceTree = "<group>"; };
-		658EAC44202FDC5F00933176 /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
+		658EAC44202FDC5F00933176 /* CFAppInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAppInstance.swift; sourceTree = "<group>"; };
 		658EAC53202FDC9A00933176 /* Events.Envelope.proto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Events.Envelope.proto.swift; sourceTree = "<group>"; };
 		658EAC54202FDC9A00933176 /* Events.Error.proto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Events.Error.proto.swift; sourceTree = "<group>"; };
 		658EAC55202FDC9A00933176 /* Events.Log.proto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Events.Log.proto.swift; sourceTree = "<group>"; };
@@ -253,14 +253,14 @@
 		656D168420309D4B002B1905 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				656D168A20309D64002B1905 /* CFAppInstanceTests.swift */,
 				656D168920309D64002B1905 /* CFAppsTests.swift */,
 				656D168520309D63002B1905 /* CFEventTests.swift */,
 				656D168620309D63002B1905 /* CFInfoTests.swift */,
-				656D168720309D63002B1905 /* CFOrgTests.swift */,
-				656D168B20309D64002B1905 /* CFSpaceTests.swift */,
-				656D168A20309D64002B1905 /* InstanceTests.swift */,
-				656D168820309D63002B1905 /* ServiceTests.swift */,
 				65A3307E203A7313008E803A /* CFModelTestBase.swift */,
+				656D168720309D63002B1905 /* CFOrgTests.swift */,
+				656D168820309D63002B1905 /* CFServiceBindingTests.swift */,
+				656D168B20309D64002B1905 /* CFSpaceTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -327,14 +327,14 @@
 			isa = PBXGroup;
 			children = (
 				658EAC43202FDC5F00933176 /* CFApp.swift */,
+				658EAC44202FDC5F00933176 /* CFAppInstance.swift */,
 				658EAC3F202FDC5F00933176 /* CFEvent.swift */,
 				658EAC40202FDC5F00933176 /* CFInfo.swift */,
 				658EAC41202FDC5F00933176 /* CFOrg.swift */,
+				656D168220309CA2002B1905 /* CFServiceBinding.swift */,
 				658EAC8F202FFF0A00933176 /* CFSession.swift */,
 				658EAC42202FDC5F00933176 /* CFSpace.swift */,
-				658EAC44202FDC5F00933176 /* Instance.swift */,
 				658EAC52202FDC9A00933176 /* Proto */,
-				656D168220309CA2002B1905 /* Service.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -628,12 +628,12 @@
 				65B031692030022F001CA690 /* CFAccountStore.swift in Sources */,
 				658EAC59202FDC9B00933176 /* Events.Envelope.proto.swift in Sources */,
 				658EAC5E202FDC9B00933176 /* Events.Metric.proto.swift in Sources */,
-				658EAC4A202FDC5F00933176 /* Instance.swift in Sources */,
+				658EAC4A202FDC5F00933176 /* CFAppInstance.swift in Sources */,
 				658EAC77202FEBF600933176 /* CFRequest.swift in Sources */,
 				658EAC75202FEBF200933176 /* CFApi.swift in Sources */,
 				658EAC45202FDC5F00933176 /* CFEvent.swift in Sources */,
 				658EAC98203000F400933176 /* String.swift in Sources */,
-				656D168320309CA2002B1905 /* Service.swift in Sources */,
+				656D168320309CA2002B1905 /* CFServiceBinding.swift in Sources */,
 				658EAC76202FEBF600933176 /* CFLogs.swift in Sources */,
 				658EAC90202FFF0A00933176 /* CFSession.swift in Sources */,
 			);
@@ -653,8 +653,8 @@
 				656D167820309652002B1905 /* CFAccountStoreTests.swift in Sources */,
 				656D167B203096A2002B1905 /* CFAccountFactory.swift in Sources */,
 				656D167120309639002B1905 /* CFApiTests.swift in Sources */,
-				656D168F20309D64002B1905 /* ServiceTests.swift in Sources */,
-				656D169120309D64002B1905 /* InstanceTests.swift in Sources */,
+				656D168F20309D64002B1905 /* CFServiceBindingTests.swift in Sources */,
+				656D169120309D64002B1905 /* CFAppInstanceTests.swift in Sources */,
 				656D167220309639002B1905 /* CFRequestTests.swift in Sources */,
 				656D168C20309D64002B1905 /* CFEventTests.swift in Sources */,
 				656D168D20309D64002B1905 /* CFInfoTests.swift in Sources */,

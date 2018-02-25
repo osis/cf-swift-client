@@ -1,7 +1,7 @@
 import Foundation
 import ObjectMapper
 
-public class Instance: ImmutableMappable {
+public class CFAppInstance: ImmutableMappable {
     var state: String
     
     var cpuUsage: Double?
