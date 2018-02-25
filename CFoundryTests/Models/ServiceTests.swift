@@ -1,27 +1,26 @@
 import Foundation
 import XCTest
-import SwiftyJSON
 
 @testable import CFoundry
 
-class ServiceTests:XCTestCase {
+class ServiceTests: CFModelTestBase {
+    var serviceBinding: ServiceBinding?
     
-    func service() -> Service {
-        let path = Bundle(for: type(of: self)).path(forResource: "app_summary", ofType: "json")
-        let data = NSData(contentsOfFile: path!)
-        let json = CFResponseHandler().sanitizeJson(JSON(data: data! as Data))
-        return Service(json: json["services"][0])
+    override func setUp() {
+        super.setUp()
+        
+        serviceBinding = localResponseArray(t: ServiceBinding.self, name: "app_summary", keyPath: "services")[0]
     }
     
     func testName() {
-        let service = self.service()
-        
-        XCTAssertEqual(service.name(), "label-1")
+        XCTAssertEqual(serviceBinding!.name, "name-82")
+    }
+    
+    func testServiceLabel() {
+        XCTAssertEqual(serviceBinding!.serviceLabel, "label-1")
     }
     
     func testPlanName() {
-        let service = self.service()
-        
-        XCTAssertEqual(service.planName(), "name-83")
+        XCTAssertEqual(serviceBinding!.planName, "name-83")
     }
 }

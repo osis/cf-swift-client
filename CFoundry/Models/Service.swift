@@ -1,21 +1,20 @@
 import Foundation
-import CoreData
-import SwiftyJSON
+import ObjectMapper
 
-public class Service: NSObject {
+public class ServiceBinding: ImmutableMappable {
+    var name: String
+    var planName: String
+    var serviceLabel: String
     
-    public var json: JSON?
-    
-    public init(json: JSON) {
-        super.init()
-        self.json = json
+    public required init(map: Map) throws {
+        name = try map.value("name")
+        planName = try map.value("service_plan.name")
+        serviceLabel = try map.value("service_plan.service.label")
     }
     
-    public func name() -> String {
-        return json!["service_plan"]["service"]["label"].stringValue
-    }
-    
-    public func planName() -> String {
-        return json!["service_plan"]["name"].stringValue
+    public func mapping(map: Map) {
+        name <- map["name"]
+        planName <- map["service_plan.name"]
+        serviceLabel <- map["service_plan.service.label"]
     }
 }
