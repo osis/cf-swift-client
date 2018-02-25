@@ -59,7 +59,6 @@
 		65A33078203A3F4D008E803A /* AlamofireObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC8C202FFE8A00933176 /* AlamofireObjectMapper.framework */; };
 		65A3307A203A4053008E803A /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC7A202FED8700933176 /* Alamofire.framework */; };
 		65A3307B203A40A0008E803A /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC8B202FFE8A00933176 /* ObjectMapper.framework */; };
-		65A3307D203A6261008E803A /* FixtureUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3307C203A6261008E803A /* FixtureUtil.swift */; };
 		65A3307F203A7313008E803A /* CFModelTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3307E203A7313008E803A /* CFModelTestBase.swift */; };
 		65A33081203A774D008E803A /* orgs.json in Resources */ = {isa = PBXBuildFile; fileRef = 65A33080203A774D008E803A /* orgs.json */; };
 		65B031692030022F001CA690 /* CFAccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B031652030022F001CA690 /* CFAccountStore.swift */; };
@@ -145,7 +144,6 @@
 		658EAC8F202FFF0A00933176 /* CFSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFSession.swift; sourceTree = "<group>"; };
 		658EAC97203000F400933176 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		65A33076203A3F41008E803A /* SwiftWebSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftWebSocket.framework; path = Carthage/Build/iOS/SwiftWebSocket.framework; sourceTree = "<group>"; };
-		65A3307C203A6261008E803A /* FixtureUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureUtil.swift; sourceTree = "<group>"; };
 		65A3307E203A7313008E803A /* CFModelTestBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFModelTestBase.swift; sourceTree = "<group>"; };
 		65A33080203A774D008E803A /* orgs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = orgs.json; sourceTree = "<group>"; };
 		65B031652030022F001CA690 /* CFAccountStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAccountStore.swift; sourceTree = "<group>"; };
@@ -239,7 +237,6 @@
 				656D166320309631002B1905 /* info.json */,
 				656D166420309631002B1905 /* service_plan.json */,
 				65BE0FCD203911FA00191045 /* spaces.json */,
-				65A3307C203A6261008E803A /* FixtureUtil.swift */,
 				65A33080203A774D008E803A /* orgs.json */,
 			);
 			path = Fixtures;
@@ -648,7 +645,6 @@
 			files = (
 				65A3307F203A7313008E803A /* CFModelTestBase.swift in Sources */,
 				656D168120309AD9002B1905 /* LogMessageStringTests.swift in Sources */,
-				65A3307D203A6261008E803A /* FixtureUtil.swift in Sources */,
 				656D167720309652002B1905 /* CFStoreTests.swift in Sources */,
 				656D169020309D64002B1905 /* CFAppsTests.swift in Sources */,
 				656D167020309639002B1905 /* CFLogsTests.swift in Sources */,
