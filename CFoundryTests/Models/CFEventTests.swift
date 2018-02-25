@@ -8,6 +8,7 @@ class CFEventTests: CFModelTestBase {
     
     override func setUp() {
         super.setUp()
+        
         events = localResponseArray(t: CFEvent.self, name: "events")
     }
     

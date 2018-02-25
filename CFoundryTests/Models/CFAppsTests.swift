@@ -9,6 +9,7 @@ class CFAppsTests: CFModelTestBase {
     
     override func setUp() {
         super.setUp()
+        
         apps = localResponseArray(t: CFApp.self, name: "apps")
     }
     

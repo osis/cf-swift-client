@@ -8,6 +8,7 @@ class CFOrgTests: CFModelTestBase {
     
     override func setUp() {
         super.setUp()
+        
         org = localResponseArray(t: CFOrg.self, name: "orgs")[0]
     }
     

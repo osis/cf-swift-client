@@ -7,6 +7,8 @@ class InstanceTests: CFModelTestBase {
     var instance: Instance?
     
     override func setUp() {
+        super.setUp()
+        
         instance = localResponseObject(t: Instance.self, name: "app_stats", keyPath: "0")
     }
     

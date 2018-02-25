@@ -7,6 +7,8 @@ class CFInfoTests: CFModelTestBase {
     var info: CFInfo?
 
     override func setUp() {
+        super.setUp()
+        
         info = localResponseObject(t: CFInfo.self, name: "info")
     }
 

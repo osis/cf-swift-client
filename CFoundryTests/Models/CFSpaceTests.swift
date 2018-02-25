@@ -8,6 +8,7 @@ class CFSpaceTests: CFModelTestBase {
     
     override func setUp() {
         super.setUp()
+        
         space = localResponseArray(t: CFSpace.self, name: "spaces")[0]
     }
     
