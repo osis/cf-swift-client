@@ -1,69 +1,52 @@
 import Foundation
 import XCTest
-import SwiftyJSON
 
 @testable import CFoundry
 
-class InstanceTests: XCTestCase {
+class InstanceTests: CFModelTestBase {
+    var instance: Instance?
     
-    func instance() -> Instance {
-        let path = Bundle(for: type(of: self)).path(forResource: "app_stats", ofType: "json")
-        let data = NSData(contentsOfFile: path!)
-        let json = CFResponseHandler().sanitizeJson(JSON(data: data! as Data))
-        return Instance(json: json["0"])
+    override func setUp() {
+        instance = localResponseObject(t: Instance.self, name: "app_stats", keyPath: "0")
     }
     
-    func testURI() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.uri(), "https://app_name.example.com")
+    func testURIs() {
+        XCTAssertEqual(instance!.uris!, ["app_name.example.com", "other_name.example.com"])
     }
     
     func testState() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.state(), "started")
+        XCTAssertEqual(instance!.state, "RUNNING")
     }
     
-    func testCPUUsagePercentage() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.cpuUsagePercentage(), 14.0)
+    func testReadableState() {
+        XCTAssertEqual(instance!.translatedState(), "started")
     }
     
-    func testMemoryUsage() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.memoryUsage(), 2849.609375)
+    func testMemoryUsageMB() {
+        XCTAssertEqual(instance!.memoryUsageMB(), 28.49609375)
     }
     
-    func testMemoryQuota() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.memoryQuota(), 512)
+    func testMemoryQuotaMB() {
+        XCTAssertEqual(instance!.memoryQuotaMB(), 512.0)
+    }
+    
+    func testDiskUsageMB() {
+        XCTAssertEqual(instance!.diskUsageMB(), 63.31640625)
+    }
+    
+    func testDiskQuotaMB() {
+        XCTAssertEqual(instance!.diskQuotaMB(), 1024.0)
     }
     
     func testMemoryUsagePercentage() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.memoryUsagePercentage(), 5.5999999999999996)
-    }
-    
-    func testDiskUsage() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.diskUsage(), 6331.640625)
-    }
-    
-    func testDiskQuota() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.diskQuota(), 1024)
+        XCTAssertEqual(instance!.memoryUsagePercentage(), 5.5999999999999996)
     }
     
     func testDiskUsagePercentage() {
-        let instance = self.instance()
-        
-        XCTAssertEqual(instance.diskUsagePercentage(), 6.2000000000000002)
+        XCTAssertEqual(instance!.diskUsagePercentage(), 6.2000000000000002)
+    }
+    
+    func testCPUUsagePercentage() {
+        XCTAssertEqual(instance!.cpuUsagePercentage(), 14.0)
     }
 }

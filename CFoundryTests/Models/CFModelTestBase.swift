@@ -26,7 +26,7 @@ class CFModelTestBase: XCTestCase {
         return spaces
     }
     
-    func localResponseObject<T: ImmutableMappable>(t: T.Type, name: String) -> T {
+    func localResponseObject<T: ImmutableMappable>(t: T.Type, name: String, keyPath: String? = nil) -> T {
         let path = Bundle(for: type(of: self)).path(forResource: name, ofType: "json")
         let responseStub = stub(condition: isMethodGET()) { _ in
             OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: [ "Content-Type": "application/json" ])
@@ -34,7 +34,7 @@ class CFModelTestBase: XCTestCase {
         
         var object:T?
         let exp = expectation(description: "moo")
-        Alamofire.request("test.io/local").responseObject(queue: nil, keyPath: nil, context: nil) { (response: DataResponse<T>) in
+        Alamofire.request("test.io/local").responseObject(queue: nil, keyPath: keyPath, context: nil) { (response: DataResponse<T>) in
             object = response.result.value!
             exp.fulfill()
         }
