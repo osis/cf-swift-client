@@ -1,6 +1,4 @@
-import UIKit
 import XCTest
-import CoreData
 
 @testable import CFoundry
 
@@ -13,44 +11,58 @@ class CFAppsTests: CFModelTestBase {
         apps = localResponseArray(t: CFApp.self, name: "apps")
     }
     
-    func testBuildPack() {
-        XCTAssertEqual(apps![0].buildpack!, "moo", "Something")
-    }
-    
     func testGuid() {
-        XCTAssert((apps![0].guid as Any) is String, "GUID is a String")
         XCTAssertEqual(apps![0].guid, "12f830d7-2ec9-4c66-ad0a-dc5d32affb1f")
     }
     
-    func testNameType() {
+    func testSpaceGuid() {
+        XCTAssertEqual(apps![0].spaceGuid, "84ab199d-4f64-4214-8146-7848e5bb2963")
+    }
+    
+    func testName() {
         XCTAssertEqual(apps![0].name, "name-1568")
     }
     
-    func testPackageStateType() {
+    func testPackageState() {
         XCTAssertEqual(apps![0].packageState, "PENDING")
     }
     
-    func testStateType() {
+    func testState() {
         XCTAssertEqual(apps![0].state, "STOPPED")
     }
     
-    func testDiskQuotaType() {
-        XCTAssertEqual(apps![0].diskQuota, 1024)
+    func testDiskQuota() {
+        XCTAssertEqual(apps![0].diskQuota, 512)
     }
     
-    func testMemoryType() {
+    func testMemory() {
         XCTAssertEqual(apps![0].memory, 1024)
     }
     
-    func testEmptyActiveBuildpack() {
-        XCTAssertEqual(apps![0].activeBuildpack(), "", "Active buildpack is empty when there is no buildpack information")
+    func testBuildPack() {
+        XCTAssertNil(apps![0].buildpack)
+        XCTAssertNil(apps![1].buildpack)
+        XCTAssertEqual(apps![2].buildpack!, "https://github.com/cloudfoundry/go-buildpack")
+    }
+    
+    func testDetectedBuildPack() {
+        XCTAssertNil(apps![0].detectedBuildpack)
+        XCTAssertEqual(apps![1].detectedBuildpack, "ruby")
+        XCTAssertNil(apps![2].detectedBuildpack)
+    }
+    
+    func testCommand() {
+        XCTAssertNil(apps![0].command)
+        XCTAssertEqual(apps![1].command, "rails s")
+        XCTAssertNil(apps![2].command)
     }
     
     func testActiveBuildpackViaBuildpack() {
-        let app = apps![0]
-        app.buildpack = "someBuildpack"
+        XCTAssertEqual(apps![0].activeBuildpack(), "", "Active buildpack is empty when there is no buildpack information.")
         
-        XCTAssertEqual(app.activeBuildpack(), "someBuildpack", "Active buildpack is buildpack when provided and there is no detected buildpack")
+        XCTAssertEqual(apps![1].activeBuildpack(), "ruby", "Active buildpack is detected buildpack when one isn't defined.")
+        
+        XCTAssertEqual(apps![2].activeBuildpack(), "https://github.com/cloudfoundry/go-buildpack", "Active buildpack is buildpack when defined and there is no detected buildpack")
     }
     
     func testActiveBuildpackViaDetectedBuildpack() {
@@ -82,5 +94,13 @@ class CFAppsTests: CFModelTestBase {
         app.state = "NOSTART"
         
         XCTAssertEqual(app.statusImageName(), "stopped", "Status name should be stopped if state is not started")
+    }
+    
+    func testFormattedMemory() {
+        XCTAssertEqual(apps![0].formattedMemory(), "1 GB")
+    }
+    
+    func testFormattedDiskQuota() {
+        XCTAssertEqual(apps![0].formattedDiskQuota(), "512 MB")
     }
 }

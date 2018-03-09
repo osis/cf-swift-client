@@ -3,21 +3,26 @@ import ObjectMapper
 
 public class CFApp: ImmutableMappable {
     
-    public var guid: String = ""
-    public var name: String = ""
+    public var guid: String
+    public var spaceGuid: String
+    public var name: String
+    public var packageState: String
+    public var state: String
+    public var diskQuota: Int32
+    public var memory: Int32
     public var buildpack: String?
     public var detectedBuildpack: String?
-    public var packageState: String = ""
-    public var state: String = ""
-    public var spaceGuid: String = ""
-    public var diskQuota: Int32 = 0
-    public var memory: Int32 = 0
-    public var command: String = ""
+    public var command: String?
     
     public required init(map: Map) throws
     {
         guid = try map.value("metadata.guid")
         name = try map.value("entity.name")
+        packageState = try map.value("entity.package_state")
+        state = try map.value("entity.state")
+        spaceGuid = try map.value("entity.space_guid")
+        diskQuota = try map.value("entity.disk_quota")
+        memory = try map.value("entity.memory")
     }
     
     public func mapping(map: Map) {
@@ -26,20 +31,20 @@ public class CFApp: ImmutableMappable {
         buildpack <- map["entity.buildpack"]
         detectedBuildpack <- map["entity.detected_buildpack"]
         packageState <- map["entity.package_state"]
-        state <- map["state"]
-        spaceGuid <- map["space_guid"]
-        diskQuota <- map["disk_quota"]
-        memory <- map["memory"]
-        command <- map["command"]
+        state <- map["entity.state"]
+        spaceGuid <- map["entity.space_guid"]
+        diskQuota <- map["entity.disk_quota"]
+        memory <- map["entity.memory"]
+        command <- map["entity.command"]
     }
     
     public func activeBuildpack() -> String {
-        if ((detectedBuildpack?.isEmpty) == false) {
-            return detectedBuildpack!
+        if let pack = detectedBuildpack {
+            return pack
         }
         
-        if ((buildpack?.isEmpty) == false) {
-            return buildpack!
+        if let pack = buildpack {
+            return pack
         }
         
         return ""
