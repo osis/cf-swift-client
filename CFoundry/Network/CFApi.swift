@@ -1,136 +1,112 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import ObjectMapper
+import AlamofireObjectMapper
 
-public protocol ResponseHandler {
-    var retryLogin: Bool { get set }
-    func success(_ response: DataResponse<Any>, success: @escaping (_ json: JSON) -> Void)
-    func error(_ response: DataResponse<Any>, error: @escaping (_ statusCode: Int?, _ url: URL?) -> Void)
-    func unauthorized(_ originalURLRequest: NSMutableURLRequest, success: @escaping (_ json: JSON) -> Void)
-    func authRefreshSuccess(_ urlRequest: NSMutableURLRequest, success: @escaping (_ json: JSON) -> Void)
-    func authRefreshFailure()
-}
-
-public class CFResponseHandler: ResponseHandler {
+enum CFAPIError: Error, CustomStringConvertible {
+    case NullAccountError()
     
-    public var retryLogin = true
-    
-    public init() { }
-    
-    public func success(_ response: DataResponse<Any>, success: @escaping (JSON) -> Void) {
-        let json = sanitizeJson(JSON(response.result.value!))
-        
-        if let token = json["access_token"].string {
-            CFSession.oauthToken = token
+    var description: String {
+        switch self {
+        case .NullAccountError:
+            return "There is no account set to CFAPI."
         }
-        
-        success(json)
-    }
-    
-    public func error(_ response: DataResponse<Any>, error: @escaping (Int?, URL?) -> Void) {
-        error(response.response?.statusCode, response.response?.url)
-    }
-    
-    public func unauthorized(_ originalURLRequest: NSMutableURLRequest, success: @escaping (JSON) -> Void) {
-        CFSession.oauthToken = nil
-        
-        self.retryLogin = false
-        if let account = CFSession.account() {
-            let loginURLRequest = CFRequest.login(
-                account.info.authEndpoint,
-                account.username,
-                account.password
-            )
-            
-            CFApi(responseHandler: self).refreshToken(loginURLRequest, originalURLRequest: originalURLRequest, success: success)
-        } else {
-            self.authRefreshFailure()
-        }
-    }
-    
-    public func authRefreshSuccess(_ urlRequest: NSMutableURLRequest, success: @escaping (_ json: JSON) -> Void) {
-        self.retryLogin = true
-        
-        if let token = CFSession.oauthToken {
-            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-        
-        CFApi(responseHandler: self).request(urlRequest as URLRequest, success: success, error: { _, _ in
-            self.authRefreshFailure()
-        })
-    }
-    
-    public func authRefreshFailure() {
-        // TODO: Delegate this
-        CFSession.logout(true)
-    }
-    
-    public func sanitizeJson(_ json: JSON) -> JSON {
-        var sanitizedJson = json
-        
-        for (key, subJson) in json["resources"] {
-            let index = Int(key)!
-            
-            for (metadataKey, metadataSubJson) in subJson["metadata"] {
-                sanitizedJson["resources"][index][metadataKey] = metadataSubJson
-            }
-            
-            for (entityKey, entitySubJson) in subJson["entity"] {
-                sanitizedJson["resources"][index][entityKey] = entitySubJson
-            }
-            sanitizedJson["resources"][index]["entity"] = JSON.null
-        }
-        
-        return sanitizedJson
     }
 }
 
 public class CFApi {
-    var responseHandler: ResponseHandler
     
-    public init(responseHandler: ResponseHandler = CFResponseHandler()) {
-        self.responseHandler = responseHandler
-    }
+    static var session: CFSession?
     
-    public func authRequest(_ urlRequest: URLRequestConvertible, success: @escaping (_ json: JSON) -> Void, error: @escaping (_ statusCode: Int?, _ url: URL?) -> Void) {
-        responseHandler.retryLogin = false
-        Alamofire.request(urlRequest.urlRequest!).validate().responseJSON { response in
-            self.handleResponse(response, success: success, error: error)
-        }
-    }
-    
-    public func request(_ urlRequest: URLRequestConvertible, success: @escaping (_ json: JSON) -> Void, error: @escaping (_ statusCode: Int?, _ url: URL?) -> Void) {
-        Alamofire.request(urlRequest.urlRequest!).validate().responseJSON { response in
-            self.handleResponse(response, success: success, error: error)
-        }
-    }
-    
-    public func dopplerRequest(_ urlRequest: URLRequestConvertible, completionHandler: @escaping (_ request: URLRequest?, _ response: HTTPURLResponse?, _ data: Data?, _ error: NSError?) -> Void) {
+    static func info(apiURL: String, completed: @escaping (_ info: CFInfo?, _ error: Error?) -> Void) {
+        let infoRequest = CFRequest.info(apiURL)
         
-        Alamofire.request(urlRequest.urlRequest!).validate().responseData(completionHandler: { (response) in
-            completionHandler(response.request, response.response, response.data, response.error as NSError?)
-        })
+        performObjectRequest(t: CFInfo.self, cfRequest: infoRequest, completed: completed)
     }
     
-    func refreshToken(_ loginURLRequest: CFRequest, originalURLRequest: NSMutableURLRequest, success: @escaping (_ json: JSON) -> Void) {
-            self.request(loginURLRequest, success: { _ in
-                print("--- Token Refresh Success")
-                self.responseHandler.authRefreshSuccess(originalURLRequest, success: success)
-            }, error: { (_, _) in
-                print("--- Token Refresh Fail")
-                self.responseHandler.authRefreshFailure()
-        })
+    static func login(account: CFAccount, completed: @escaping (Error?) -> Void) {
+        self.session = CFSession(account: account)
+        performAuthRequest(account: account, completed: completed)
     }
     
-    func handleResponse(_ response: DataResponse<Any>, success: @escaping (_ json: JSON) -> Void, error: @escaping (_ statusCode: Int?, _ url: URL?) -> Void) {
-        if (response.result.isSuccess) {
-            responseHandler.success(response, success: success)
-        } else if (response.response?.statusCode == 401 && responseHandler.retryLogin) {
-            print("--- Auth Fail")
-            responseHandler.unauthorized(response.request!.urlRequest as! NSMutableURLRequest, success: success)
-        } else if (response.result.isFailure) {
-            print("--- Error")
-            responseHandler.error(response, error: error)
+    static func orgs(completed: @escaping (_ orgs: [CFOrg]?, _ error: Error?) -> Void) {
+        let orgsRequest = CFRequest.orgs()
+        
+        performArrayRequest(t: CFOrg.self, cfRequest: orgsRequest, completed: completed)
+    }
+    
+    static func apps(orgGuid: String, page: Int, searchText: String, completed: @escaping (_ orgs: [CFApp]?, _ error: Error?) -> Void) {
+        let orgsRequest = CFRequest.apps(orgGuid, page, searchText)
+        
+        performArrayRequest(t: CFApp.self, cfRequest: orgsRequest, completed: completed)
+    }
+    
+    static func spaces(completed: @escaping (_ spaces: [CFSpace]?, _ error: Error?) -> Void) {
+        let spacesRequest = CFRequest.orgs()
+        
+        performArrayRequest(t: CFSpace.self, cfRequest: spacesRequest, completed: completed)
+    }
+}
+    
+private extension CFApi {
+    
+    static func performObjectRequest<T: ImmutableMappable>(t: T.Type, cfRequest: CFRequest, completed: @escaping (T?, Error?) -> Void) {
+        Alamofire.request(cfRequest.urlRequest!).validate().responseObject(queue: nil, keyPath: cfRequest.keypath, context: nil) { (response: DataResponse<T>) in
+            completed(response.result.value, response.error)
         }
     }
+    
+    static func performArrayRequest<T: ImmutableMappable>(t: T.Type, cfRequest: CFRequest, completed: @escaping ([T]?, Error?) -> Void) {
+        Alamofire.request(cfRequest.urlRequest!).validate().responseArray(queue: nil, keyPath: cfRequest.keypath, context: nil) { (response: DataResponse<[T]>) in
+            completed(response.result.value, response.error)
+        }
+    }
+    
+    static func performAuthRequest(account: CFAccount, completed: @escaping (Error?) -> Void) {
+        let request = CFRequest.login(account.info.authEndpoint, account.username, account.password)
+
+        Alamofire.request(request).validate().responseJSON(queue: nil, options: []) { response in
+            if let error = response.error {
+                self.session = nil
+                completed(error)
+                return;
+            }
+
+            if let json = response.value as? [String : AnyObject] {
+                self.session?.accessToken = json["access_token"] as? String
+                self.session?.refreshToken = json["refresh_token"] as? String
+                completed(nil)
+            }
+        }
+    }
+    
+//    public func dopplerRequest(_ urlRequest: URLRequestConvertible, completionHandler: @escaping (_ request: URLRequest?, _ response: HTTPURLResponse?, _ data: Data?, _ error: NSError?) -> Void) {
+//
+//        Alamofire.request(urlRequest.urlRequest!).validate().responseData(completionHandler: { (response) in
+//            completionHandler(response.request, response.response, response.data, response.error as NSError?)
+//        })
+//    }
+//
+//    func refreshToken(_ loginURLRequest: CFRequest, originalURLRequest: NSMutableURLRequest, success: @escaping () -> Void) {
+//            self.request(loginURLRequest, success: { _ in
+//                print("--- Token Refresh Success")
+//                self.responseHandler.authRefreshSuccess(originalURLRequest, success: success)
+//            }, error: { (_, _) in
+//                print("--- Token Refresh Fail")
+//                self.responseHandler.authRefreshFailure()
+//        })
+//    }
+//
+//    func handleResponse(_ response: DataResponse<Any>, success: @escaping () -> Void, error: @escaping (_ statusCode: Int?, _ url: URL?) -> Void) {
+//        if (response.result.isSuccess) {
+//            responseHandler.success(response, success: success)
+//        } else if (response.response?.statusCode == 401 && responseHandler.retryLogin) {
+//            print("--- Auth Fail")
+//            responseHandler.unauthorized(response.request!.urlRequest as! NSMutableURLRequest, success: success)
+//        } else if (response.result.isFailure) {
+//            print("--- Error")
+//            responseHandler.error(response, error: error)
+//        }
+//    }
 }

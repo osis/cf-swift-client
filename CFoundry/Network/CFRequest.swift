@@ -1,11 +1,11 @@
 import Foundation
 import Alamofire
+import ObjectMapper
 
 public enum CFRequest: URLRequestConvertible {
     case info(String)
     case login(String, String, String)
     case orgs()
-    case orgApps(Int)
     case apps(String, Int, String)
     case appSummary(String)
     case appStats(String)
@@ -20,13 +20,15 @@ public enum CFRequest: URLRequestConvertible {
         case .info(let url):
             return url
         case .recentLogs(_):
-            if var components = URLComponents(string: CFSession.dopplerURLString) {
-                components.scheme = "https"
-                return components.string!
+            if let endpoint = CFApi.session?.info.dopplerLoggingEndpoint {
+                if var components = URLComponents(string: endpoint) {
+                    components.scheme = "https"
+                    return components.string!
+                }
             }
             return ""
         default:
-            return CFSession.baseURLString
+            return CFApi.session!.target
         }
     }
     
@@ -52,6 +54,41 @@ public enum CFRequest: URLRequestConvertible {
             return "/apps/\(guid)/recentlogs"
         default:
             return ""
+        }
+    }
+    
+//    var responseType: (ImmutableMappable.Type, Bool, String?)?  {
+//        switch self {
+//        case .info:
+//            return (CFInfo.self, false, nil)
+//        case .orgs:
+//            return (CFOrg.self, true, "resources")
+//        case .apps:
+//            return (CFApp.self, true, "resources")
+//        case .appSummary(let guid):
+//            return (CFAppInstance.self, true, "resources")
+////        case .appStats(let guid):
+////            return "/v2/apps/\(guid)/stats"
+//        case .spaces:
+//            return (CFSpace.self, true, "resources")
+//        case .events:
+//            return (CFEvent.self, true, "resources")
+//        case .recentLogs(let guid):
+//            return nil
+////            return "/apps/\(guid)/recentlogs"
+//        default:
+//            return nil
+//        }
+//    }
+    
+    var keypath: String? {
+        switch self {
+        case .info:
+            return nil
+        case .apps, .orgs, .spaces, .events:
+            return "resources"
+        default:
+            return nil
         }
     }
     
@@ -85,7 +122,7 @@ public enum CFRequest: URLRequestConvertible {
         
         mutableURLRequest.httpMethod = method.rawValue
         
-        if let token = CFSession.oauthToken {
+        if let token = CFApi.session?.accessToken {
             mutableURLRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         

@@ -7,6 +7,9 @@ public struct CFAccount: ReadableSecureStorable, CreateableSecureStorable, Delet
     public let username: String
     public let password: String
     
+    public var accessToken: String?
+    public var refreshToken: String?
+
     public let info: CFInfo
     
     public init(target: String, username: String, password: String, info: CFInfo) {

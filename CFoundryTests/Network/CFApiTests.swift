@@ -6,205 +6,347 @@ import SwiftyJSON
 
 @testable import CFoundry
 
-class CFResponseHandlerTests: XCTestCase {
+class CFResponseHandlerTests: CFModelTestBase {
     
     override func tearDown() {
         super.tearDown()
         
-        clearState()
-    }
-    
-    func clearState() {
         OHHTTPStubs.removeAllStubs()
-        CFSession.reset()
     }
     
-    func createErrorResponse(statusCode: Int) -> DataResponse<Any> {
-        let error = NSError(domain: NSExceptionName.internalInconsistencyException.rawValue, code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to construct response for stub."])
-        let result = Result<Any>.failure(error)
-        let httpResponse = HTTPURLResponse(url: NSURL(string: "https://test.io")! as URL, statusCode: 500, httpVersion: "1.1", headerFields: nil)
-        
-        return DataResponse.init(request: nil, response: httpResponse, data: nil, result: result)
-    }
+//    func createErrorResponse(statusCode: Int) -> DataResponse<Any> {
+//        let error = NSError(domain: NSExceptionName.internalInconsistencyException.rawValue, code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to construct response for stub."])
+//        let result = Result<Any>.failure(error)
+//        let httpResponse = HTTPURLResponse(url: NSURL(string: "https://test.io")! as URL, statusCode: 500, httpVersion: "1.1", headerFields: nil)
+//
+//        return DataResponse.init(request: nil, response: httpResponse, data: nil, result: result)
+//    }
     
-    func testSuccess() {
-        let result = Result<Any>.success(["testKey":"testValue"])
-        let response = DataResponse.init(request: nil, response: nil, data: nil, result: result)
-        let exp = expectation(description: "Success Callback")
+    func testInfoSuccess() {
+        let o = CFAccountFactory.info().serialize()
+        stubGET(statusCode: 200, jsonObject: o)
         
-        CFResponseHandler().success(response, success: { json in
-            XCTAssertEqual(json["testKey"].stringValue, "testValue")
+        let exp = expectation(description: "Login success callback")
+        CFApi.info(apiURL: "https://api.test.io", completed: { (info: CFInfo?, error: Error?) in
+            XCTAssertNotNil(info)
+            XCTAssertNil(error)
             exp.fulfill()
         })
-        
         waitForExpectations(timeout: 1.0, handler: nil)
-        XCTAssertNil(CFSession.oauthToken)
+        
+        XCTAssertNil(CFApi.session?.accessToken)
+    }
+    
+    func testInfoError() {
+        stubGET(statusCode: 404, jsonObject: [])
+        
+        let exp = expectation(description: "Login success callback")
+        CFApi.info(apiURL: "https://test.io") { (info: CFInfo?, error: Error?) in
+            XCTAssertNil(info)
+            XCTAssertNotNil(error)
+            XCTAssertTrue(error?.localizedDescription.range(of: "404") != nil)
+
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        XCTAssertNil(CFApi.session?.accessToken)
     }
 
-    func testError() {
-        let response = createErrorResponse(statusCode: 500)
-        let exp = expectation(description: "Error Callback")
-        
-        CFResponseHandler().error(response, error: { statusCode, url in
-            XCTAssertEqual(statusCode, 500)
-            XCTAssertEqual(url?.absoluteString, "https://test.io")
-            
-            exp.fulfill()
-        })
-        
-        waitForExpectations(timeout: 1.0, handler: nil)
-        XCTAssertNil(CFSession.oauthToken)
-    }
-    
-    func testUnauthorizedSuccess() {
-        stub(condition: isMethodPOST()) { _ in
-            OHHTTPStubsResponse(
-                jsonObject: [],
-                statusCode: 200,
-                headers: [ "Content-Type": "application/json" ]
-            )
-        }
-        CFSession.oauthToken = "TestToken"
-        
-        class FakeCFResponseHandler: CFResponseHandler {
-            let exp: XCTestExpectation
-            init(expectation: XCTestExpectation) {
-                self.exp = expectation
-            }
-            
-            override func authRefreshSuccess(_ urlRequest: NSMutableURLRequest, success: @escaping (_ json: JSON) -> Void) {
-                XCTAssertFalse(self.retryLogin)
-                XCTAssertNil(CFSession.oauthToken)
-                exp.fulfill()
-            }
-        }
+    func testLoginSuccess() {
+        let jsonObject = ["access_token": "accessToken", "refresh_token": "refreshToken" ]
+        stubPOST(statusCode: 200, jsonObject: jsonObject)
         
         let account = CFAccountFactory.account()
-        CFSession.account(account)
-        try! CFAccountStore.create(account)
-
-        let exp = expectation(description: "Auth Refresh Success Callback")
-        let handler = FakeCFResponseHandler(expectation: exp)
-        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
         
-        handler.unauthorized(request, success: { _ in })
-        
+        let exp2 = expectation(description: "Login success callback")
+        CFApi.login(account: account) { error in
+            XCTAssertNil(error)
+            exp2.fulfill()
+        }
         waitForExpectations(timeout: 1.0, handler: nil)
         
-        try! CFAccountStore.delete(account)
+        if let session = CFApi.session {
+            XCTAssertEqual(session.accessToken, "accessToken")
+            XCTAssertEqual(session.refreshToken, "refreshToken")
+        } else {
+            XCTFail("Session isn't set upon login")
+        }
     }
     
-    func testUnauthorizedFailure() {
-        stub(condition: isMethodGET()) { _ in
-            OHHTTPStubsResponse(
-                jsonObject: [],
-                statusCode: 401,
-                headers: [ "Content-Type": "application/json" ]
-            )}
-        
-        class FakeCFResponseHandler: CFResponseHandler {
-            let exp: XCTestExpectation
-            init(exp: XCTestExpectation) {
-                self.exp = exp
-            }
-            
-            override func authRefreshFailure() {
-                exp.fulfill()
-            }
-        }
-        
+    func testLoginError() {
+        stubPOST(statusCode: 403, jsonObject: [])
         let account = CFAccountFactory.account()
-        CFSession.account(account)
-        try! CFAccountStore.create(account)
         
-        let exp = expectation(description: "Auth Refresh Success Callback")
-        let handler = FakeCFResponseHandler(exp: exp)
-        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
-        
-        handler.unauthorized(request, success: { _ in })
-        
-        waitForExpectations(timeout: 1.0, handler: nil)
-    }
-    
-    func testUnauthorizedWithNoCreds() {
-        class FakeCFResponseHandler: CFResponseHandler {
-            let exp: XCTestExpectation
-            init(exp: XCTestExpectation) {
-                self.exp = exp
-            }
-            
-            override func authRefreshFailure() {
-                exp.fulfill()
-            }
+        let exp = expectation(description: "Login success callback")
+        CFApi.login(account: account) { error in
+            XCTAssertNotNil(error)
+            exp.fulfill()
         }
-
-        let exp = expectation(description: "Auth Refresh Success Callback")
-        let handler = FakeCFResponseHandler(exp: exp)
-        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
-
-        handler.unauthorized(request, success: { _ in })
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        if CFApi.session != nil {
+            XCTFail("Session should not be set after login failure.")
+        }
+    }
+    
+    func testOrgsSuccess() {
+        let _ = stubWithFile(filename: "orgs")
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "Orgs success callack")
+        CFApi.orgs() { orgs, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(orgs)
+            exp.fulfill()
+        }
         
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
+    func testOrgsError() {
+        stubGET(statusCode: 500, jsonObject: [])
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "Orgs error callack")
+        CFApi.orgs() { orgs, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(orgs)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
     
-    func testAuthRefreshSuccess() {
-        stub(condition: isMethodGET()) { _ in
-            OHHTTPStubsResponse(
-                jsonObject: [],
-                statusCode: 200,
-                headers: [ "Content-Type": "application/json" ]
-            )}
+    func testSpacesSuccess() {
+        let _ = stubWithFile(filename: "orgs")
         
-        let handler = CFResponseHandler()
-        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
-        let exp = expectation(description: "Auth Recovery Success Callback")
+        CFApi.session = CFAccountFactory.session()
         
-        handler.retryLogin = false
-        handler.authRefreshSuccess(request, success: { _ in
+        let exp = expectation(description: "Spaces success callback")
+        CFApi.spaces() { spaces, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(spaces)
             exp.fulfill()
-        })
+        }
         
         waitForExpectations(timeout: 1.0, handler: nil)
-        
-        XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
-        XCTAssertTrue(handler.retryLogin)
     }
-
-    func testAuthRefreshSuccessWithToken() {
-        stub(condition: isMethodGET()) { _ in
-            OHHTTPStubsResponse(
-                jsonObject: [],
-                statusCode: 200,
-                headers: [ "Content-Type": "application/json" ]
-            )}
+    
+    func testSpacesError() {
+        stubGET(statusCode: 500, jsonObject: [])
         
-        let handler = CFResponseHandler()
-        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
-        let exp = expectation(description: "Auth Recovery Success Callback")
-       
-        CFSession.oauthToken = "TestToken"
-        handler.authRefreshSuccess(request, success: { _ in
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "Spaces error callback")
+        CFApi.spaces() { spaces, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(spaces)
             exp.fulfill()
-        })
+        }
         
         waitForExpectations(timeout: 1.0, handler: nil)
-        let authHeaderToken = request.value(forHTTPHeaderField: "Authorization")
-        XCTAssertEqual(authHeaderToken, "Bearer TestToken")
     }
-
-    func testSanitizeJson() {
-        let path = Bundle(for: type(of: self)).path(forResource: "apps", ofType: "json")!
-        let data = NSData(contentsOfFile: path)
-        let json = JSON(data: data! as Data)
+    
+    func testAppsSuccess() {
+        let _ = stubWithFile(filename: "apps")
         
-        let sanitizedJson = CFResponseHandler().sanitizeJson(json)
-        let resource = sanitizedJson["resources"][0]
+        CFApi.session = CFAccountFactory.session()
         
-        XCTAssertTrue(resource["guid"] == "12f830d7-2ec9-4c66-ad0a-dc5d32affb1f")
-        XCTAssertTrue(resource["metadata"] != JSON.null)
+        let exp = expectation(description: "Apps success callback")
+        CFApi.apps(orgGuid: "testGuid", page: 1, searchText: "") { apps, error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(apps)
+            exp.fulfill()
+        }
         
-        XCTAssertTrue(resource["name"] == "name-1568")
-        XCTAssertTrue(resource["entity"] == JSON.null)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
+    
+    func testAppsError() {
+        stubGET(statusCode: 500, jsonObject: [])
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "Apps error callback")
+        CFApi.apps(orgGuid: "testGuid", page: 1, searchText: "") { apps, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(apps)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+//    func testLoginFailure() {
+//        stubPOST(statusCode: 200, jsonObject: jsonObject)
+//    }
+    
+//    func testSuccess() {
+//        let result = Result<Any>.success(["testKey":"testValue"])
+//        let response = DataResponse.init(request: nil, response: nil, data: nil, result: result)
+//        let exp = expectation(description: "Success Callback")
+//
+//        CFResponseHandler().success(response, success: { json in
+//            XCTAssertEqual(json["testKey"].stringValue, "testValue")
+//            exp.fulfill()
+//        })
+//
+//        waitForExpectations(timeout: 1.0, handler: nil)
+//        XCTAssertNil(CFApi.session?.accessToken)
+//    }
+//
+//    func testError() {
+//        let response = createErrorResponse(statusCode: 500)
+//        let exp = expectation(description: "Error Callback")
+//
+//        CFResponseHandler().error(response, error: { statusCode, url in
+//            XCTAssertEqual(statusCode, 500)
+//            XCTAssertEqual(url?.absoluteString, "https://test.io")
+//
+//            exp.fulfill()
+//        })
+//
+//        waitForExpectations(timeout: 1.0, handler: nil)
+//        XCTAssertNil(CFApi.session?.accessToken)
+//    }
+//
+//    func testUnauthorizedSuccess() {
+//        stub(condition: isMethodPOST()) { _ in
+//            OHHTTPStubsResponse(
+//                jsonObject: [],
+//                statusCode: 200,
+//                headers: [ "Content-Type": "application/json" ]
+//            )
+//        }
+//        CFApi.session?.accessToken = "TestToken"
+//
+//        class FakeCFResponseHandler: CFResponseHandler {
+//            let exp: XCTestExpectation
+//            init(expectation: XCTestExpectation) {
+//                self.exp = expectation
+//            }
+//
+//            override func authRefreshSuccess(_ urlRequest: NSMutableURLRequest, success: @escaping () -> Void) {
+//                XCTAssertFalse(self.retryLogin)
+//                XCTAssertNil(CFApi.session?.accessToken)
+//                exp.fulfill()
+//            }
+//        }
+//
+//        let account = CFAccountFactory.account()
+//        //CFSession.account(account)
+//        try! CFAccountStore.create(account)
+//
+//        let exp = expectation(description: "Auth Refresh Success Callback")
+//        let handler = FakeCFResponseHandler(expectation: exp)
+//        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
+//
+//        handler.unauthorized(request, success: {  })
+//
+//        waitForExpectations(timeout: 1.0, handler: nil)
+//
+//        try! CFAccountStore.delete(account)
+//    }
+//
+//    func testUnauthorizedFailure() {
+//        stub(condition: isMethodGET()) { _ in
+//            OHHTTPStubsResponse(
+//                jsonObject: [],
+//                statusCode: 401,
+//                headers: [ "Content-Type": "application/json" ]
+//            )}
+//
+//        class FakeCFResponseHandler: CFResponseHandler {
+//            let exp: XCTestExpectation
+//            init(exp: XCTestExpectation) {
+//                self.exp = exp
+//            }
+//
+//            override func authRefreshFailure() {
+//                exp.fulfill()
+//            }
+//        }
+//
+//        let account = CFAccountFactory.account()
+//        //CFSession.account(account)
+//        try! CFAccountStore.create(account)
+//
+//        let exp = expectation(description: "Auth Refresh Success Callback")
+//        let handler = FakeCFResponseHandler(exp: exp)
+//        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
+//
+//        handler.unauthorized(request, success: { })
+//
+//        waitForExpectations(timeout: 1.0, handler: nil)
+//    }
+//
+//    func testUnauthorizedWithNoCreds() {
+//        class FakeCFResponseHandler: CFResponseHandler {
+//            let exp: XCTestExpectation
+//            init(exp: XCTestExpectation) {
+//                self.exp = exp
+//            }
+//
+//            override func authRefreshFailure() {
+//                exp.fulfill()
+//            }
+//        }
+//
+//        let exp = expectation(description: "Auth Refresh Success Callback")
+//        let handler = FakeCFResponseHandler(exp: exp)
+//        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
+//
+//        handler.unauthorized(request, success: { })
+//
+//        waitForExpectations(timeout: 1.0, handler: nil)
+//    }
+//
+//
+//    func testAuthRefreshSuccess() {
+//        stub(condition: isMethodGET()) { _ in
+//            OHHTTPStubsResponse(
+//                jsonObject: [],
+//                statusCode: 200,
+//                headers: [ "Content-Type": "application/json" ]
+//            )}
+//
+//        let handler = CFResponseHandler()
+//        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
+//        let exp = expectation(description: "Auth Recovery Success Callback")
+//
+//        handler.retryLogin = false
+//        handler.authRefreshSuccess(request, success: {
+//            exp.fulfill()
+//        })
+//
+//        waitForExpectations(timeout: 1.0, handler: nil)
+//
+//        XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
+//        XCTAssertTrue(handler.retryLogin)
+//    }
+//
+//    func testAuthRefreshSuccessWithToken() {
+//        stub(condition: isMethodGET()) { _ in
+//            OHHTTPStubsResponse(
+//                jsonObject: [],
+//                statusCode: 200,
+//                headers: [ "Content-Type": "application/json" ]
+//            )}
+//
+//        let handler = CFResponseHandler()
+//        let request = NSMutableURLRequest(url: URL(string: "https://api.test.io")!)
+//        let exp = expectation(description: "Auth Recovery Success Callback")
+//
+//        CFApi.session?.accessToken = "TestToken"
+//        handler.authRefreshSuccess(request, success: {
+//            exp.fulfill()
+//        })
+//
+//        waitForExpectations(timeout: 1.0, handler: nil)
+//        let authHeaderToken = request.value(forHTTPHeaderField: "Authorization")
+//        XCTAssertEqual(authHeaderToken, "Bearer TestToken")
+//    }
 }
