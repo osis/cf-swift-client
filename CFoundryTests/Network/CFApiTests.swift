@@ -180,6 +180,36 @@ class CFResponseHandlerTests: CFModelTestBase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
+    func testAuthRetrySuccess() {
+        // repsond 401 for error
+        
+        let exp1 = expectation(description: "Info")
+        var nfo: CFInfo?
+        CFApi.info(apiURL: "https://api.run.pivotal.io") { (info: CFInfo?, error: Error?) in
+            nfo = info
+            exp1.fulfill()
+        }
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        let exp2 = expectation(description: "Login")
+        let acct = CFAccount(target: "https://api.run.pivotal.io", username: "testUser", password: "testPass", info: nfo!)
+        CFApi.login(account: acct) { _ in
+            exp2.fulfill()
+        }
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        print(CFApi.session?.accessToken)
+        CFApi.session?.accessToken = "moo"
+        print(CFApi.session?.accessToken)
+        let exp3 = expectation(description: "Orgs")
+        CFApi.orgs { (orgs, error) in
+            XCTAssertNotNil(orgs)
+            exp3.fulfill()
+        }
+        waitForExpectations(timeout: 1.0, handler: nil)
+        print(CFApi.session?.accessToken)
+    }
+    
 //    func testLoginFailure() {
 //        stubPOST(statusCode: 200, jsonObject: jsonObject)
 //    }

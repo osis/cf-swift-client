@@ -50,7 +50,7 @@ class CFRequestTests: XCTestCase {
     
     func testLoginMember() {
         let path = "/oauth/token"
-        let request: CFRequest = CFRequest.login(baseLoginURL, account!.username, account!.password)
+        let request: CFRequest = CFRequest.tokenGrant(baseLoginURL, account!.username, account!.password)
         let authHeader = request.urlRequest?.value(forHTTPHeaderField: "Authorization")!
         let params = [
             "grant_type": "password",

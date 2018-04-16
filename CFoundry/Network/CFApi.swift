@@ -59,12 +59,41 @@ private extension CFApi {
     
     static func performArrayRequest<T: ImmutableMappable>(t: T.Type, cfRequest: CFRequest, completed: @escaping ([T]?, Error?) -> Void) {
         Alamofire.request(cfRequest.urlRequest!).validate().responseArray(queue: nil, keyPath: cfRequest.keypath, context: nil) { (response: DataResponse<[T]>) in
+            print("** CFApi: Requesting \(T.self)...")
+            if (response.response?.statusCode == 401) {
+                performAuthRefreshRequest(t: T.self, request: cfRequest, completed: completed)
+                return;
+            }
             completed(response.result.value, response.error)
         }
     }
+        
+    // custom unauthorized callback closure?
+       
+    static func performAuthRefreshRequest<T: ImmutableMappable>(t: T.Type, request: CFRequest, completed: @escaping ([T]?, Error?) -> Void) {
+        print("** CFApi: Refeshing Token...")
+        if let token = CFApi.session?.refreshToken {
+            let request = CFRequest.tokenRefresh(token)
+            Alamofire.request(request).validate().responseJSON(queue: nil, options: []) { response in
+                if let error = response.error {
+                    self.session = nil
+                    completed(nil, error)
+                    return;
+                }
+                
+                if let json = response.value as? [String : AnyObject] {
+                    print("** CFApi: Retrying Original Request...")
+                    self.session?.accessToken = json["access_token"] as? String
+                    self.session?.refreshToken = json["refresh_token"] as? String
+                    performArrayRequest(t: T.self, cfRequest: request, completed: completed)
+                }
+            }
+        }
+        
+    }
     
     static func performAuthRequest(account: CFAccount, completed: @escaping (Error?) -> Void) {
-        let request = CFRequest.login(account.info.authEndpoint, account.username, account.password)
+        let request = CFRequest.tokenGrant(account.info.authEndpoint, account.username, account.password)
 
         Alamofire.request(request).validate().responseJSON(queue: nil, options: []) { response in
             if let error = response.error {
@@ -80,6 +109,8 @@ private extension CFApi {
             }
         }
     }
+    
+    
     
 //    public func dopplerRequest(_ urlRequest: URLRequestConvertible, completionHandler: @escaping (_ request: URLRequest?, _ response: HTTPURLResponse?, _ data: Data?, _ error: NSError?) -> Void) {
 //

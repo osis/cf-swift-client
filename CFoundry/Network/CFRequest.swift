@@ -4,7 +4,8 @@ import ObjectMapper
 
 public enum CFRequest: URLRequestConvertible {
     case info(String)
-    case login(String, String, String)
+    case tokenGrant(String, String, String)
+    case tokenRefresh(String)
     case orgs()
     case apps(String, Int, String)
     case appSummary(String)
@@ -15,7 +16,7 @@ public enum CFRequest: URLRequestConvertible {
     
     var baseURLString: String {
         switch self {
-        case .login(let url, _, _):
+        case .tokenGrant(let url, _, _):
             return url
         case .info(let url):
             return url
@@ -36,7 +37,7 @@ public enum CFRequest: URLRequestConvertible {
         switch self {
         case .info:
             return "/v2/info"
-        case .login:
+        case .tokenGrant, .tokenRefresh:
             return "/oauth/token"
         case .orgs:
             return "/v2/organizations"
@@ -52,8 +53,6 @@ public enum CFRequest: URLRequestConvertible {
             return "/v2/events"
         case .recentLogs(let guid):
             return "/apps/\(guid)/recentlogs"
-        default:
-            return ""
         }
     }
     
@@ -83,8 +82,6 @@ public enum CFRequest: URLRequestConvertible {
     
     var keypath: String? {
         switch self {
-        case .info:
-            return nil
         case .apps, .orgs, .spaces, .events:
             return "resources"
         default:
@@ -94,7 +91,7 @@ public enum CFRequest: URLRequestConvertible {
     
     var method: HTTPMethod {
         switch self {
-        case .login:
+        case .tokenGrant, .tokenRefresh:
             return .post
         default:
             return .get
@@ -103,8 +100,12 @@ public enum CFRequest: URLRequestConvertible {
     
     public func asURLRequest() throws -> URLRequest {
         switch self {
-        case .login(_, let username, let password):
-            return loginURLRequest(username, password: password)
+        case .tokenGrant(_, let username, let password):
+            let loginParams = ["grant_type": "password", "username": username, "password": password, "scope": ""]
+            return tokenURLRequest(params: loginParams)
+        case .tokenRefresh(let refreshToken):
+            let refreshParams = ["grant_type": "refresh_token", "token_format": "opaque", "refresh_token": refreshToken ]
+            return tokenURLRequest(params: refreshParams)
         case .apps(let orgGuid, let page, let searchText):
             return appsURLRequest(orgGuid, page: page, searchText: searchText) as URLRequest
         case .spaces(let appGuids):
@@ -129,20 +130,14 @@ public enum CFRequest: URLRequestConvertible {
         return mutableURLRequest
     }
     
-    func loginURLRequest(_ username: String, password: String) -> URLRequest {
+    func tokenURLRequest(params: [String : String]) -> URLRequest {
         var urlRequest = cfURLRequest()
-        let loginParams = [
-            "grant_type": "password",
-            "username": username,
-            "password": password,
-            "scope": ""
-        ]
-        
+
         urlRequest.setValue("Basic \(CFSession.loginAuthToken)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         
-        urlRequest = try! URLEncoding.default.encode(urlRequest, with: loginParams)
+        urlRequest = try! URLEncoding.default.encode(urlRequest, with: params)
         return urlRequest
     }
     
