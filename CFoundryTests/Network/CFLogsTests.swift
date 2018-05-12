@@ -157,9 +157,9 @@ class CFLogsTests: XCTestCase {
                 super.init(appGuid: "")
             }
             
-            override func handleAuthFail() {
-                expectation.fulfill()
-            }
+//            override func handleAuthFail() {
+//                expectation.fulfill()
+//            }
         }
 
         CFApi.session?.accessToken = ""
