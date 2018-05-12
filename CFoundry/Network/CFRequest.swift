@@ -5,20 +5,21 @@ import ObjectMapper
 public enum CFRequest: URLRequestConvertible {
     case info(String)
     case tokenGrant(String, String, String)
-    case tokenRefresh(String)
+    case tokenRefresh(String, String)
     case orgs()
     case apps(String, Int, String)
     case appSummary(String)
     case appStats(String)
-    case spaces([String])
+    //TODO: case spaces(String) // Spaces for org
+    case appSpaces([String])
     case events(String)
     case recentLogs(String)
     
     var baseURLString: String {
         switch self {
-        case .tokenGrant(let url, _, _):
-            return url
-        case .info(let url):
+        case .tokenGrant(let url, _, _),
+             .tokenRefresh(let url, _),
+             .info(let url):
             return url
         case .recentLogs(_):
             if let endpoint = CFApi.session?.info.dopplerLoggingEndpoint {
@@ -37,7 +38,8 @@ public enum CFRequest: URLRequestConvertible {
         switch self {
         case .info:
             return "/v2/info"
-        case .tokenGrant, .tokenRefresh:
+        case .tokenGrant,
+             .tokenRefresh:
             return "/oauth/token"
         case .orgs:
             return "/v2/organizations"
@@ -47,7 +49,7 @@ public enum CFRequest: URLRequestConvertible {
             return "/v2/apps/\(guid)/summary"
         case .appStats(let guid):
             return "/v2/apps/\(guid)/stats"
-        case .spaces:
+        case .appSpaces:
             return "/v2/spaces"
         case .events:
             return "/v2/events"
@@ -56,33 +58,9 @@ public enum CFRequest: URLRequestConvertible {
         }
     }
     
-//    var responseType: (ImmutableMappable.Type, Bool, String?)?  {
-//        switch self {
-//        case .info:
-//            return (CFInfo.self, false, nil)
-//        case .orgs:
-//            return (CFOrg.self, true, "resources")
-//        case .apps:
-//            return (CFApp.self, true, "resources")
-//        case .appSummary(let guid):
-//            return (CFAppInstance.self, true, "resources")
-////        case .appStats(let guid):
-////            return "/v2/apps/\(guid)/stats"
-//        case .spaces:
-//            return (CFSpace.self, true, "resources")
-//        case .events:
-//            return (CFEvent.self, true, "resources")
-//        case .recentLogs(let guid):
-//            return nil
-////            return "/apps/\(guid)/recentlogs"
-//        default:
-//            return nil
-//        }
-//    }
-    
     var keypath: String? {
         switch self {
-        case .apps, .orgs, .spaces, .events:
+        case .apps, .orgs, .appSpaces, .events:
             return "resources"
         default:
             return nil
@@ -103,12 +81,12 @@ public enum CFRequest: URLRequestConvertible {
         case .tokenGrant(_, let username, let password):
             let loginParams = ["grant_type": "password", "username": username, "password": password, "scope": ""]
             return tokenURLRequest(params: loginParams)
-        case .tokenRefresh(let refreshToken):
-            let refreshParams = ["grant_type": "refresh_token", "token_format": "opaque", "refresh_token": refreshToken ]
+        case .tokenRefresh(_, let refreshToken):
+            let refreshParams = ["grant_type": "refresh_token", "refresh_token": refreshToken ]
             return tokenURLRequest(params: refreshParams)
         case .apps(let orgGuid, let page, let searchText):
             return appsURLRequest(orgGuid, page: page, searchText: searchText) as URLRequest
-        case .spaces(let appGuids):
+        case .appSpaces(let appGuids):
             return spacesURLRequest(appGuids) as URLRequest
         case .events(let appGuid):
             return eventsURLRequest(appGuid) as URLRequest

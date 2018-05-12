@@ -6,7 +6,7 @@ import SwiftyJSON
 
 @testable import CFoundry
 
-class CFResponseHandlerTests: CFModelTestBase {
+class CFApiTests: CFModelTestBase {
     
     override func tearDown() {
         super.tearDown()
@@ -54,8 +54,7 @@ class CFResponseHandlerTests: CFModelTestBase {
     }
 
     func testLoginSuccess() {
-        let jsonObject = ["access_token": "accessToken", "refresh_token": "refreshToken" ]
-        stubPOST(statusCode: 200, jsonObject: jsonObject)
+        stubWithFile(filename: "tokens", condition: isMethodPOST())
         
         let account = CFAccountFactory.account()
         
@@ -67,8 +66,8 @@ class CFResponseHandlerTests: CFModelTestBase {
         waitForExpectations(timeout: 1.0, handler: nil)
         
         if let session = CFApi.session {
-            XCTAssertEqual(session.accessToken, "accessToken")
-            XCTAssertEqual(session.refreshToken, "refreshToken")
+            XCTAssertEqual(session.accessToken, "testAccessToken")
+            XCTAssertEqual(session.refreshToken, "testRefreshToken")
         } else {
             XCTFail("Session isn't set upon login")
         }
@@ -88,6 +87,38 @@ class CFResponseHandlerTests: CFModelTestBase {
         if CFApi.session != nil {
             XCTFail("Session should not be set after login failure.")
         }
+    }
+    
+    func testAuthTokenRefresh() {
+        var callCounter = 0
+        stub(condition: isMethodGET()) {_ in
+            callCounter += 1
+            
+            if callCounter == 1 {
+                return OHHTTPStubsResponse(jsonObject: [], statusCode: 401, headers: nil)
+            } else if callCounter == 2 {
+                let path = Bundle(for: type(of: self)).path(forResource: "orgs", ofType: "json")
+                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: [ "Content-Type": "application/json" ])
+            }
+            
+            XCTFail()
+            return OHHTTPStubsResponse()
+        }
+        stubWithFile(filename: "tokens", condition: isMethodPOST())
+        
+        CFApi.session = CFAccountFactory.session()
+        CFApi.session?.refreshToken = "refreshToken"
+        XCTAssertNil(CFApi.session?.accessToken)
+        
+        let exp = expectation(description: "Request auth and re-request Orgs")
+        CFApi.orgs { (orgs, error) in
+            XCTAssertNotNil(orgs)
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        XCTAssertEqual(CFApi.session?.accessToken, "testAccessToken")
+        XCTAssertEqual(CFApi.session?.refreshToken, "testRefreshToken")
     }
     
     func testOrgsSuccess() {
@@ -120,13 +151,13 @@ class CFResponseHandlerTests: CFModelTestBase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testSpacesSuccess() {
-        let _ = stubWithFile(filename: "orgs")
+    func testAppSpacesSuccess() {
+        let _ = stubWithFile(filename: "spaces")
         
         CFApi.session = CFAccountFactory.session()
         
         let exp = expectation(description: "Spaces success callback")
-        CFApi.spaces() { spaces, error in
+        CFApi.appSpaces(appGuids: ["testGuid1","testGuid2"]) { spaces, error in
             XCTAssertNil(error)
             XCTAssertNotNil(spaces)
             exp.fulfill()
@@ -135,18 +166,18 @@ class CFResponseHandlerTests: CFModelTestBase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testSpacesError() {
+    func testAppSpacesError() {
         stubGET(statusCode: 500, jsonObject: [])
-        
+
         CFApi.session = CFAccountFactory.session()
-        
+
         let exp = expectation(description: "Spaces error callback")
-        CFApi.spaces() { spaces, error in
+        CFApi.appSpaces(appGuids: ["testGuid1","testGuid2"]) { spaces, error in
             XCTAssertNotNil(error)
             XCTAssertNil(spaces)
             exp.fulfill()
         }
-        
+
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
@@ -180,34 +211,94 @@ class CFResponseHandlerTests: CFModelTestBase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    func testAuthRetrySuccess() {
-        // repsond 401 for error
+    func testAppSummarySuccess() {
+        stubWithFile(filename: "app_summary")
         
-        let exp1 = expectation(description: "Info")
-        var nfo: CFInfo?
-        CFApi.info(apiURL: "https://api.run.pivotal.io") { (info: CFInfo?, error: Error?) in
-            nfo = info
-            exp1.fulfill()
-        }
-        waitForExpectations(timeout: 1.0, handler: nil)
+        CFApi.session = CFAccountFactory.session()
         
-        let exp2 = expectation(description: "Login")
-        let acct = CFAccount(target: "https://api.run.pivotal.io", username: "testUser", password: "testPass", info: nfo!)
-        CFApi.login(account: acct) { _ in
-            exp2.fulfill()
+        let exp = expectation(description: "Apps summary success callback")
+        CFApi.appSummary(appGuid: "testGuid") { appSummary, error in
+            XCTAssertNotNil(appSummary)
+            XCTAssertNil(error)
+            exp.fulfill()
         }
-        waitForExpectations(timeout: 1.0, handler: nil)
         
-        print(CFApi.session?.accessToken)
-        CFApi.session?.accessToken = "moo"
-        print(CFApi.session?.accessToken)
-        let exp3 = expectation(description: "Orgs")
-        CFApi.orgs { (orgs, error) in
-            XCTAssertNotNil(orgs)
-            exp3.fulfill()
-        }
         waitForExpectations(timeout: 1.0, handler: nil)
-        print(CFApi.session?.accessToken)
+    }
+    
+    func testAppSummaryError() {
+        stubGET(statusCode: 500, jsonObject: [])
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "Apps summary error callback")
+        CFApi.appSummary(appGuid: "testGuid") { appSummary, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(appSummary)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    func testAppStatsSuccess() {
+        stubWithFile(filename: "app_stats")
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "App stats success callback")
+        CFApi.appStats(appGuid: "testGuid") { appStats, error in
+            XCTAssertNotNil(appStats)
+            XCTAssertNil(error)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    func testAppStatsError() {
+        stubGET(statusCode: 500, jsonObject: [])
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "App stats success callback")
+        CFApi.appStats(appGuid: "testGuid") { appStats, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(appStats)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    func testEventsSuccess() {
+        stubWithFile(filename: "events")
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "Events success callback")
+        CFApi.events(appGuid: "testGuid") { events, error in
+            XCTAssertNotNil(events)
+            XCTAssertNil(error)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    func testEventsError() {
+        stubGET(statusCode: 500, jsonObject: [])
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "Events error callback")
+        CFApi.events(appGuid: "testGuid") { events, error in
+            XCTAssertNotNil(error)
+            XCTAssertNil(events)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
 //    func testLoginFailure() {
