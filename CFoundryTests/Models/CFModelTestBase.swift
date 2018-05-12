@@ -76,9 +76,9 @@ class CFModelTestBase: XCTestCase {
         }
     }
     
-    func stubWithFile(filename: String) -> OHHTTPStubsDescriptor {
+    func stubWithFile(filename: String, condition: @escaping OHHTTPStubsTestBlock = isMethodGET()) -> OHHTTPStubsDescriptor {
         let path = Bundle(for: type(of: self)).path(forResource: filename, ofType: "json")
-        return stub(condition: isMethodGET()) { _ in
+        return stub(condition: condition) { _ in
             OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: [ "Content-Type": "application/json" ])
         }
     }
