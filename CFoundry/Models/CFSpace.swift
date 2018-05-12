@@ -2,8 +2,8 @@ import Foundation
 import ObjectMapper
 
 public class CFSpace: ImmutableMappable {
-    var guid: String
-    var name: String
+    public var guid: String
+    public var name: String
     
     public required init(map: Map) throws
     {

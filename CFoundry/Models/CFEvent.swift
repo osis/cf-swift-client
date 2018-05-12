@@ -2,21 +2,21 @@ import Foundation
 import ObjectMapper
 
 public class CFEvent: ImmutableMappable {
-    var guid: String
-    var type: String
-    var timestamp: String
+    public var guid: String
+    public var type: String
+    public var timestamp: String
     
-    var index: Int?
-    var exitDescription: String?
-    var reason: String?
+    public var index: Int?
+    public var exitDescription: String?
+    public var reason: String?
     
-    var requestedName: String?
-    var requestedState: String?
-    var requestedMemory: Int?
-    var requestedInstances: Int?
-    var requestedDiskQuota: Int?
-    var requestedBuildpack: String?
-    var requestedEnvironmentJSON: String?
+    public var requestedName: String?
+    public var requestedState: String?
+    public var requestedMemory: Int?
+    public var requestedInstances: Int?
+    public var requestedDiskQuota: Int?
+    public var requestedBuildpack: String?
+    public var requestedEnvironmentJSON: String?
     
     public required init(map: Map) throws {
         guid = try map.value("metadata.guid")
@@ -54,19 +54,6 @@ public class CFEvent: ImmutableMappable {
         requestedEnvironmentJSON <- map["entity.metadata.request.environment_json"]
         
     }
-    
-    // TODO: View Logic
-//    public func date -> String {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-//
-//        let date = dateFormatter.date(from: timestamp)
-//
-//        dateFormatter.dateStyle = .medium
-//        dateFormatter.timeStyle = .medium
-//
-//        return dateFormatter.string(from: date!)
-//    }
     
     public func readableType() -> String? {
         switch type {

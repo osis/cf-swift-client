@@ -2,9 +2,9 @@ import Foundation
 import ObjectMapper
 
 public class CFServiceBinding: ImmutableMappable {
-    var name: String
-    var planName: String
-    var serviceLabel: String
+    public var name: String
+    public var planName: String
+    public var serviceLabel: String
     
     public required init(map: Map) throws {
         name = try map.value("name")
