@@ -1,7 +1,9 @@
 import Foundation
 import Locksmith
+import SwiftyJSON
+import ObjectMapper
 
-public struct CFAccount: ReadableSecureStorable, CreateableSecureStorable, DeleteableSecureStorable,GenericPasswordSecureStorable {
+public struct CFAccount: ReadableSecureStorable, CreateableSecureStorable, DeleteableSecureStorable, GenericPasswordSecureStorable {
     
     public let target: String
     public let username: String
@@ -23,6 +25,10 @@ public struct CFAccount: ReadableSecureStorable, CreateableSecureStorable, Delet
     public var account: String { return "\(username)_\(target)" }
     
     public var data: [String : Any] {
+        return self.serialize()
+    }
+    
+    public func serialize() -> [String : Any] {
         let data: [String : AnyObject] = [
             "target" : target as AnyObject,
             "username" : username as AnyObject,
@@ -31,5 +37,18 @@ public struct CFAccount: ReadableSecureStorable, CreateableSecureStorable, Delet
         ]
 
         return data
+    }
+    
+    public static func deserialize(_ json: [String : Any]) -> CFAccount? {
+        let infoJSON = json["info"] as! [String : Any]
+        if let info = try? Mapper<CFInfo>().map(JSON: infoJSON) {
+            return CFAccount(
+                target: json["target"] as! String,
+                username: json["username"] as! String,
+                password: json["password"] as! String,
+                info: info
+            )
+        }
+        return nil
     }
 }

@@ -14,28 +14,44 @@ public class CFApp: ImmutableMappable {
     public var detectedBuildpack: String?
     public var command: String?
     
+    public var serviceBindings: [CFServiceBinding]?
+    
     public required init(map: Map) throws
     {
-        guid = try map.value("metadata.guid")
-        name = try map.value("entity.name")
-        packageState = try map.value("entity.package_state")
-        state = try map.value("entity.state")
-        spaceGuid = try map.value("entity.space_guid")
-        diskQuota = try map.value("entity.disk_quota")
-        memory = try map.value("entity.memory")
+        let (guidPath, propPath) = CFApp.propertyPath(map: map)
+        
+        guid = try map.value("\(guidPath)guid")
+        name = try map.value("\(propPath)name")
+        packageState = try map.value("\(propPath)package_state")
+        state = try map.value("\(propPath)state")
+        spaceGuid = try map.value("\(propPath)space_guid")
+        diskQuota = try map.value("\(propPath)disk_quota")
+        memory = try map.value("\(propPath)memory")
     }
     
-    public func mapping(map: Map) {
-        guid <- map["metadata.guid"]
-        name <- map["entity.name"]
-        buildpack <- map["entity.buildpack"]
-        detectedBuildpack <- map["entity.detected_buildpack"]
-        packageState <- map["entity.package_state"]
-        state <- map["entity.state"]
-        spaceGuid <- map["entity.space_guid"]
-        diskQuota <- map["entity.disk_quota"]
-        memory <- map["entity.memory"]
-        command <- map["entity.command"]
+    private static func propertyPath(map: Map) -> (String, String) {
+        if map.JSON["entity"] != nil {
+            return ("metadata.", "entity.")
+        }
+        return ("", "")
+    }
+    
+    public func mapping(map: Map)
+    {
+        let (guidPath, propPath) = CFApp.propertyPath(map: map)
+        
+        guid <- map["\(guidPath)guid"]
+        name <- map["\(propPath)name"]
+        buildpack <- map["\(propPath)buildpack"]
+        detectedBuildpack <- map["\(propPath)detected_buildpack"]
+        packageState <- map["\(propPath)package_state"]
+        state <- map["\(propPath)state"]
+        spaceGuid <- map["\(propPath)space_guid"]
+        diskQuota <- map["\(propPath)disk_quota"]
+        memory <- map["\(propPath)memory"]
+        command <- map["\(propPath)command"]
+        
+        serviceBindings <- map["\(propPath)services"]
     }
     
     public func activeBuildpack() -> String {
