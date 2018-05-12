@@ -17,22 +17,22 @@ class CFRequestTests: XCTestCase {
         super.setUp()
         
         account = CFAccountFactory.account()
-        CFSession.account(account!)
-        CFSession.oauthToken = oauthToken
+        CFApi.session = CFAccountFactory.session()
+        CFApi.session?.accessToken = oauthToken
         try! CFAccountStore.create(account!)
     }
     
     override func tearDown() {
         super.tearDown()
         
-        CFSession.reset()
+//        CFSession.reset()
         try! CFAccountStore.delete(account!)
     }
     
     func testOAuthToken() {
         let oauthHeaderValue = CFRequest.info(baseApiURL).urlRequest?.value(forHTTPHeaderField: "Authorization")
         
-        XCTAssertEqual(CFSession.oauthToken!, "testToken", "token should not be nil when set")
+        XCTAssertEqual(CFApi.session?.accessToken!, "testToken", "token should not be nil when set")
         XCTAssertEqual(oauthHeaderValue!, "Bearer testToken", "token should be entered into header when not nil")
     }
     
@@ -40,7 +40,7 @@ class CFRequestTests: XCTestCase {
         let path = "/v2/info"
         let request: CFRequest = CFRequest.info(baseApiURL)
         
-        CFSession.oauthToken = nil
+        CFApi.session?.accessToken = nil
         
         assertRequestURLStructure(request: request, base: baseApiURL, path: path)
         assertGetParams(request: request, params: "")
@@ -50,7 +50,7 @@ class CFRequestTests: XCTestCase {
     
     func testLoginMember() {
         let path = "/oauth/token"
-        let request: CFRequest = CFRequest.login(baseLoginURL, account!.username, account!.password)
+        let request: CFRequest = CFRequest.tokenGrant(baseLoginURL, account!.username, account!.password)
         let authHeader = request.urlRequest?.value(forHTTPHeaderField: "Authorization")!
         let params = [
             "grant_type": "password",

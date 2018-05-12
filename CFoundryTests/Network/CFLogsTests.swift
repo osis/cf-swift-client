@@ -48,13 +48,13 @@ class CFLogsTests: XCTestCase {
         
         account = CFAccountFactory.account()
         try! CFAccountStore.create(account!)
-        CFSession.account(account!)
+//        //CFSession.account(account!)
     }
     
     override func tearDown() {
         super.tearDown()
         
-        CFSession.reset()
+//        CFSession.reset()
 //        try! CFAccountStore.delete(account!)
 //        removeAllStubs()
         OHHTTPStubs.removeAllStubs()
@@ -73,7 +73,7 @@ class CFLogsTests: XCTestCase {
     func testCreateSocket() {
         let logs = CFLogs(appGuid: testAppGuid)
         
-        CFSession.oauthToken = "testToken"
+        CFApi.session?.accessToken = "testToken"
         
         do {
             let socket = try logs.createSocket()
@@ -86,7 +86,7 @@ class CFLogsTests: XCTestCase {
     func testCreateSocketRequest() {
         let logs = CFLogs(appGuid: testAppGuid)
         
-        CFSession.oauthToken = "testToken"
+        CFApi.session?.accessToken = "testToken"
         
         do {
             let request = try logs.createSocketRequest()
@@ -116,7 +116,7 @@ class CFLogsTests: XCTestCase {
     }
     
     func testLogsAuthRecovery() {
-        stub(condition: isMethodGET()) { _ in
+        stub(condition: isMethodPOST()) { _ in
             OHHTTPStubsResponse(
             jsonObject: [],
             statusCode: 200,
@@ -157,12 +157,12 @@ class CFLogsTests: XCTestCase {
                 super.init(appGuid: "")
             }
             
-            override func handleAuthFail() {
-                expectation.fulfill()
-            }
+//            override func handleAuthFail() {
+//                expectation.fulfill()
+//            }
         }
 
-        CFSession.oauthToken = ""
+        CFApi.session?.accessToken = ""
         
         let exp = expectation(description: "Logs Error")
         let logs = FakeCFLogs(expectation: exp)

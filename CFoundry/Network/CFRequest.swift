@@ -1,32 +1,36 @@
 import Foundation
 import Alamofire
+import ObjectMapper
 
 public enum CFRequest: URLRequestConvertible {
     case info(String)
-    case login(String, String, String)
+    case tokenGrant(String, String, String)
+    case tokenRefresh(String, String)
     case orgs()
-    case orgApps(Int)
     case apps(String, Int, String)
     case appSummary(String)
     case appStats(String)
-    case spaces([String])
+    //TODO: case spaces(String) // Spaces for org
+    case appSpaces([String])
     case events(String)
     case recentLogs(String)
     
     var baseURLString: String {
         switch self {
-        case .login(let url, _, _):
-            return url
-        case .info(let url):
+        case .tokenGrant(let url, _, _),
+             .tokenRefresh(let url, _),
+             .info(let url):
             return url
         case .recentLogs(_):
-            if var components = URLComponents(string: CFSession.dopplerURLString) {
-                components.scheme = "https"
-                return components.string!
+            if let endpoint = CFApi.session?.info.dopplerLoggingEndpoint {
+                if var components = URLComponents(string: endpoint) {
+                    components.scheme = "https"
+                    return components.string!
+                }
             }
             return ""
         default:
-            return CFSession.baseURLString
+            return CFApi.session!.target
         }
     }
     
@@ -34,7 +38,8 @@ public enum CFRequest: URLRequestConvertible {
         switch self {
         case .info:
             return "/v2/info"
-        case .login:
+        case .tokenGrant,
+             .tokenRefresh:
             return "/oauth/token"
         case .orgs:
             return "/v2/organizations"
@@ -44,20 +49,27 @@ public enum CFRequest: URLRequestConvertible {
             return "/v2/apps/\(guid)/summary"
         case .appStats(let guid):
             return "/v2/apps/\(guid)/stats"
-        case .spaces:
+        case .appSpaces:
             return "/v2/spaces"
         case .events:
             return "/v2/events"
         case .recentLogs(let guid):
             return "/apps/\(guid)/recentlogs"
+        }
+    }
+    
+    var keypath: String? {
+        switch self {
+        case .apps, .orgs, .appSpaces, .events:
+            return "resources"
         default:
-            return ""
+            return nil
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        case .login:
+        case .tokenGrant, .tokenRefresh:
             return .post
         default:
             return .get
@@ -66,11 +78,15 @@ public enum CFRequest: URLRequestConvertible {
     
     public func asURLRequest() throws -> URLRequest {
         switch self {
-        case .login(_, let username, let password):
-            return loginURLRequest(username, password: password)
+        case .tokenGrant(_, let username, let password):
+            let loginParams = ["grant_type": "password", "username": username, "password": password, "scope": ""]
+            return tokenURLRequest(params: loginParams)
+        case .tokenRefresh(_, let refreshToken):
+            let refreshParams = ["grant_type": "refresh_token", "refresh_token": refreshToken ]
+            return tokenURLRequest(params: refreshParams)
         case .apps(let orgGuid, let page, let searchText):
             return appsURLRequest(orgGuid, page: page, searchText: searchText) as URLRequest
-        case .spaces(let appGuids):
+        case .appSpaces(let appGuids):
             return spacesURLRequest(appGuids) as URLRequest
         case .events(let appGuid):
             return eventsURLRequest(appGuid) as URLRequest
@@ -85,27 +101,21 @@ public enum CFRequest: URLRequestConvertible {
         
         mutableURLRequest.httpMethod = method.rawValue
         
-        if let token = CFSession.oauthToken {
+        if let token = CFApi.session?.accessToken {
             mutableURLRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
         return mutableURLRequest
     }
     
-    func loginURLRequest(_ username: String, password: String) -> URLRequest {
+    func tokenURLRequest(params: [String : String]) -> URLRequest {
         var urlRequest = cfURLRequest()
-        let loginParams = [
-            "grant_type": "password",
-            "username": username,
-            "password": password,
-            "scope": ""
-        ]
-        
+
         urlRequest.setValue("Basic \(CFSession.loginAuthToken)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         
-        urlRequest = try! URLEncoding.default.encode(urlRequest, with: loginParams)
+        urlRequest = try! URLEncoding.default.encode(urlRequest, with: params)
         return urlRequest
     }
     

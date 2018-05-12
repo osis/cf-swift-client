@@ -2,15 +2,15 @@ import Foundation
 import ObjectMapper
 
 public class CFAppInstance: ImmutableMappable {
-    var state: String
+    public var state: String
     
-    var cpuUsage: Double?
-    var memoryUsage: Int?
-    var diskUsage: Int?
+    public var cpuUsage: Double?
+    public var memoryUsage: Int?
+    public var diskUsage: Int?
     
-    var uris: [String]?
-    var memoryQuota: Int?
-    var diskQuota: Int?
+    public var uris: [String]?
+    public var memoryQuota: Int?
+    public var diskQuota: Int?
     
     public required init(map: Map) throws {
         state = try map.value("state")

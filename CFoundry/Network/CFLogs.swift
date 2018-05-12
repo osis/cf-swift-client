@@ -19,13 +19,8 @@ open class CFLogs: NSObject {
     
     open func recent() {
         logMessage(LogMessageString.out("Fetching Recent Logs..."))
-        let request = CFRequest.recentLogs(self.appGuid)
-        CFApi().dopplerRequest(request) { (request, response, data, rError) in
-            if (response?.statusCode == 401) {
-                self.handleAuthFail()
-            } else {
-                self.handleRecent(response, data: data)
-            }
+        CFApi.recentLogs(appGuid: self.appGuid) { (response: HTTPURLResponse?, data: Data?, error: Error?) in
+           self.handleRecent(response, data: data, error: error)
         }
     }
     
@@ -67,14 +62,10 @@ open class CFLogs: NSObject {
     
     func error(_ error: Error) {
         let errorString = String(describing: error)
-        if (errorString == "InvalidResponse(HTTP/1.1 401 Unauthorized)") {
-            handleAuthError()
-        } else {
-            print("--- Logs \(error)")
-            DispatchQueue.main.async(execute: {
-                self.logMessage(LogMessageString.err(errorString))
-            })
-        }
+        print("--- Logs \(error)")
+        DispatchQueue.main.async(execute: {
+            self.logMessage(LogMessageString.err(errorString))
+        })
     }
     
     func message(_ bytes: Any) {
@@ -107,18 +98,13 @@ open class CFLogs: NSObject {
     }
     
     func createSocketRequest() throws -> NSMutableURLRequest {
-        let account = CFSession.account()!
-        let endpoint = account.info.dopplerLoggingEndpoint
+        let info = CFApi.session!.info
+        let endpoint = info.dopplerLoggingEndpoint
         let url = URL(string: "\(endpoint)/apps/\(self.appGuid)/stream")
         let request = NSMutableURLRequest(url: url!)
 
-        request.addValue("bearer \(CFSession.oauthToken!)", forHTTPHeaderField: "Authorization")
+        request.addValue("bearer \(String(describing: CFApi.session!.accessToken))", forHTTPHeaderField: "Authorization")
         return request
-    }
-    
-    func handleAuthFail() {
-        // TODO: Delegate this
-        CFSession.logout(true)
     }
 }
 
@@ -127,7 +113,16 @@ private extension CFLogs {
         self.delegate?.logsMessage(message)
     }
     
-    func handleRecent(_ response: HTTPURLResponse?, data: Data?) {
+    func handleRecent(_ response: HTTPURLResponse?, data: Data?, error: Error?) {
+        if let e = error {
+            self.error(e)
+            return
+        }
+        
+        processResponseData(response, data: data)
+    }
+    
+    func processResponseData(_ response: HTTPURLResponse?, data: Data?) {
         if let contentType = response?.allHeaderFields["Content-Type"] as! String? {
             let boundary = contentType.components(separatedBy: "boundary=").last!
             let chunks = self.chunkMessage(data!, boundary: boundary)
@@ -141,19 +136,6 @@ private extension CFLogs {
                 }
             }
             delegate?.recentLogsFetched()
-        }
-    }
-    
-    func handleAuthError() {
-        if let account = CFSession.account() {
-            let loginURLRequest = CFRequest.login(account.info.authEndpoint, account.username, account.password)
-            CFApi().request(loginURLRequest, success: { _ in
-                self.tail()
-                }, error: { _, _ in
-                    self.handleAuthFail()
-            })
-        } else {
-            self.handleAuthFail()
         }
     }
     

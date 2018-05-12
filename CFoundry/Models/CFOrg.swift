@@ -2,8 +2,8 @@ import Foundation
 import ObjectMapper
 
 public class CFOrg: ImmutableMappable {
-    var guid: String
-    var name: String
+    public var guid: String
+    public var name: String
     
     public required init(map: Map) throws {
         guid = try map.value("metadata.guid")
@@ -14,5 +14,4 @@ public class CFOrg: ImmutableMappable {
         guid <- map["metadata.guid"]
         name <- map["entity.name"]
     }
-    
 }

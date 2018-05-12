@@ -13,11 +13,11 @@ class CFAccountFactory {
         let bundle = Bundle.init(for: CFAccountFactory.self)
         let path = bundle.path(forResource: "info", ofType: "json")
         let data = NSData(contentsOfFile: path!)
-        let json = try! JSONSerialization.jsonObject(with: data! as Data, options: JSONSerialization.ReadingOptions.allowFragments)
+        let json = try! JSONSerialization.jsonObject(with: data! as Data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any]
         
-        let info = try! Mapper<CFInfo>().mapDictionary(JSONObject: json)
+        let info = try! Mapper<CFInfo>().map(JSON: json!)
         
-        return info[""]!
+        return info
     }
     
     class func account() -> CFAccount {
@@ -27,5 +27,9 @@ class CFAccountFactory {
             password: password,
             info: info()
         )
+    }
+    
+    class func session() -> CFSession {
+        return CFSession(account: self.account())
     }
 }

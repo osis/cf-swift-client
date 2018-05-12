@@ -103,4 +103,8 @@ class CFAppsTests: CFModelTestBase {
     func testFormattedDiskQuota() {
         XCTAssertEqual(apps![0].formattedDiskQuota(), "512 MB")
     }
+    
+    func testServicesPresence() {
+        XCTAssertNil(apps![0].serviceBindings)
+    }
 }

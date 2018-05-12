@@ -8,11 +8,14 @@ import ObjectMapper
 @testable import CFoundry
 
 class CFModelTestBase: XCTestCase {
+    override func tearDown() {
+        super.tearDown()
+        
+        CFApi.session = nil
+    }
+    
     func localResponseArray<T: ImmutableMappable>(t: T.Type, name: String, keyPath: String = "resources") -> [T] {
-        let path = Bundle(for: type(of: self)).path(forResource: name, ofType: "json")
-        let responseStub = stub(condition: isMethodGET()) { _ in
-            OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: [ "Content-Type": "application/json" ])
-        }
+        let responseStub = stubWithFile(filename: name)
         
         var spaces:[T] = []
         let exp = expectation(description: "moo")
@@ -27,10 +30,7 @@ class CFModelTestBase: XCTestCase {
     }
     
     func localResponseObject<T: ImmutableMappable>(t: T.Type, name: String, keyPath: String? = nil) -> T {
-        let path = Bundle(for: type(of: self)).path(forResource: name, ofType: "json")
-        let responseStub = stub(condition: isMethodGET()) { _ in
-            OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: [ "Content-Type": "application/json" ])
-        }
+        let responseStub = stubWithFile(filename: name)
         
         var object:T?
         let exp = expectation(description: "moo")
@@ -56,5 +56,30 @@ class CFModelTestBase: XCTestCase {
         
         XCTAssertNotNil(info)
         XCTAssertEqual(OHHTTPStubs.allStubs().count, 0)
+    }
+    
+    func stubPOST(statusCode: Int32, jsonObject: Any) {
+        stubWithObject(statusCode: statusCode, jsonObject: jsonObject, isMethod: isMethodPOST())
+    }
+    
+    func stubGET(statusCode: Int32, jsonObject: Any) {
+        stubWithObject(statusCode: statusCode, jsonObject: jsonObject, isMethod: isMethodGET())
+    }
+    
+    func stubWithObject(statusCode: Int32, jsonObject: Any, isMethod: @escaping OHHTTPStubsTestBlock) {
+        stub(condition: isMethod) { _ in
+            OHHTTPStubsResponse(
+                jsonObject: jsonObject,
+                statusCode: statusCode,
+                headers: [ "Content-Type": "application/json" ]
+            )
+        }
+    }
+    
+    func stubWithFile(filename: String, condition: @escaping OHHTTPStubsTestBlock = isMethodGET()) -> OHHTTPStubsDescriptor {
+        let path = Bundle(for: type(of: self)).path(forResource: filename, ofType: "json")
+        return stub(condition: condition) { _ in
+            OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: [ "Content-Type": "application/json" ])
+        }
     }
 }
