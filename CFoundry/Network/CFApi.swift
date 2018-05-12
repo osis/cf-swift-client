@@ -94,6 +94,13 @@ private extension CFApi {
 
     static func performObjectRequest<T: ImmutableMappable>(t: T.Type, cfRequest: CFRequest, completed: @escaping (T?, Error?) -> Void) {
         Alamofire.request(cfRequest.urlRequest!).validate().responseObject(queue: nil, keyPath: cfRequest.keypath, context: nil) { (response: DataResponse<T>) in
+            print("** CFApi: Requesting \(T.self)...")
+            if (response.response?.statusCode == 401) {
+                performAuthRefreshRequest() {
+                    performObjectRequest(t: T.self, cfRequest: cfRequest, completed: completed)
+                }
+                return;
+            }
             completed(response.result.value, response.error)
         }
     }

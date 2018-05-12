@@ -89,7 +89,7 @@ class CFApiTests: CFModelTestBase {
         }
     }
     
-    func testAuthTokenRefresh() {
+    func testArrayAuthTokenRefresh() {
         var callCounter = 0
         stub(condition: isMethodGET()) {_ in
             callCounter += 1
@@ -113,6 +113,40 @@ class CFApiTests: CFModelTestBase {
         let exp = expectation(description: "Request auth and re-request Orgs")
         CFApi.orgs { (orgs, error) in
             XCTAssertNotNil(orgs)
+            XCTAssertNil(error)
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 1.0, handler: nil)
+        
+        XCTAssertEqual(CFApi.session?.accessToken, "testAccessToken")
+        XCTAssertEqual(CFApi.session?.refreshToken, "testRefreshToken")
+    }
+    
+    func testObjectAuthTokenRefresh() {
+        var callCounter = 0
+        stub(condition: isMethodGET()) {_ in
+            callCounter += 1
+            
+            if callCounter == 1 {
+                return OHHTTPStubsResponse(jsonObject: [], statusCode: 401, headers: nil)
+            } else if callCounter == 2 {
+                let path = Bundle(for: type(of: self)).path(forResource: "app_stats", ofType: "json")
+                return OHHTTPStubsResponse(fileAtPath: path!, statusCode: 200, headers: [ "Content-Type": "application/json" ])
+            }
+            
+            XCTFail()
+            return OHHTTPStubsResponse()
+        }
+        stubWithFile(filename: "tokens", condition: isMethodPOST())
+        
+        CFApi.session = CFAccountFactory.session()
+        CFApi.session?.refreshToken = "refreshToken"
+        XCTAssertNil(CFApi.session?.accessToken)
+        
+        let exp = expectation(description: "Request auth and re-request Orgs")
+        CFApi.appStats(appGuid: "") { (stats, error) in
+            XCTAssertNotNil(stats)
+            XCTAssertNil(error)
             exp.fulfill()
         }
         waitForExpectations(timeout: 1.0, handler: nil)
