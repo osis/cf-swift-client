@@ -47,7 +47,6 @@ open class CFLogs: NSObject {
             ws.event.error = error
             ws.event.message = message
         } catch {
-            print("--- Logs Connection Failed")
             logMessage(LogMessageString.out("Logs connection failed. Please try again"))
         }
     }
@@ -57,7 +56,6 @@ open class CFLogs: NSObject {
     }
     
     func closed(_ code: Int, reason: String, wasClean: Bool) {
-        print("--- Logs Disconnected")
         logMessage(LogMessageString.out("Disconnected"))
     }
     
