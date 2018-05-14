@@ -103,7 +103,10 @@ open class CFLogs: NSObject {
         let url = URL(string: "\(endpoint)/apps/\(self.appGuid)/stream")
         let request = NSMutableURLRequest(url: url!)
 
-        request.addValue("bearer \(String(describing: CFApi.session!.accessToken))", forHTTPHeaderField: "Authorization")
+        if let token = CFApi.session?.accessToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        
         return request
     }
 }
