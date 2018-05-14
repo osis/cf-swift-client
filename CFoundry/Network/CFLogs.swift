@@ -57,15 +57,27 @@ open class CFLogs: NSObject {
     }
     
     func closed(_ code: Int, reason: String, wasClean: Bool) {
+        print("--- Logs Disconnected")
         logMessage(LogMessageString.out("Disconnected"))
     }
     
     func error(_ error: Error) {
         let errorString = String(describing: error)
-        print("--- Logs \(error)")
-        DispatchQueue.main.async(execute: {
-            self.logMessage(LogMessageString.err(errorString))
-        })
+        print("--- Logs \(errorString)")
+        
+        if (errorString.range(of: "401") != nil) {
+            authRetry()
+        } else {
+            DispatchQueue.main.async(execute: {
+                self.logMessage(LogMessageString.err(errorString))
+            })
+        }
+    }
+    
+    func authRetry() {
+        CFApi.performAuthRefreshRequest {
+            self.tail()
+        }
     }
     
     func message(_ bytes: Any) {

@@ -88,6 +88,28 @@ public class CFApi {
             completed(response.response, response.data, response.error)
         }
     }
+    
+    public static func performAuthRefreshRequest(success: @escaping () -> Void) {
+        print("** CFApi: Refeshing Token...")
+        if let session = CFApi.session, let token = session.refreshToken {
+            let request = CFRequest.tokenRefresh(session.info.authEndpoint, token)
+            Alamofire.request(request).validate().responseJSON(queue: nil, options: []) { response in
+                if let error = response.error {
+                    self.session = nil
+                    // completed(nil, error)
+                    // TODO: authfail callback
+                    return;
+                }
+                
+                if let json = response.value as? [String : AnyObject] {
+                    print("** CFApi: Retrying Original Request...")
+                    self.session?.accessToken = json["access_token"] as? String
+                    self.session?.refreshToken = json["refresh_token"] as? String
+                    success()
+                }
+            }
+        }
+    }
 }
     
 private extension CFApi {
@@ -115,30 +137,6 @@ private extension CFApi {
                 return;
             }
             completed(response.result.value, response.error)
-        }
-    }
-        
-    // custom unauthorized callback closure?
-       
-    static func performAuthRefreshRequest(success: @escaping () -> Void) {
-        print("** CFApi: Refeshing Token...")
-        if let session = CFApi.session, let token = session.refreshToken {
-            let request = CFRequest.tokenRefresh(session.info.authEndpoint, token)
-            Alamofire.request(request).validate().responseJSON(queue: nil, options: []) { response in
-                if let error = response.error {
-                    self.session = nil
-                    // completed(nil, error)
-                    // TODO: authfail callback
-                    return;
-                }
-                
-                if let json = response.value as? [String : AnyObject] {
-                    print("** CFApi: Retrying Original Request...")
-                    self.session?.accessToken = json["access_token"] as? String
-                    self.session?.refreshToken = json["refresh_token"] as? String
-                    success()
-                }
-            }
         }
     }
     
