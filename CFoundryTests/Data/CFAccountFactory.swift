@@ -7,7 +7,8 @@ class CFAccountFactory {
     static let username = "cfUser"
     static let password = "cfPass"
     static let target = "https://api.test.io"
-    static let oauthToken = "testToken"
+    static let accessToken = "testAccessToken"
+    static let refreshToken = "testRefreshToken"
     
     class func info() -> CFInfo {
         let bundle = Bundle.init(for: CFAccountFactory.self)
@@ -30,6 +31,9 @@ class CFAccountFactory {
     }
     
     class func session() -> CFSession {
-        return CFSession(account: self.account())
+        let session = CFSession(account: self.account())
+        session.accessToken = accessToken
+        session.refreshToken = refreshToken
+        return session
     }
 }

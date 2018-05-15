@@ -108,6 +108,7 @@ class CFApiTests: CFModelTestBase {
         
         CFApi.session = CFAccountFactory.session()
         CFApi.session?.refreshToken = "refreshToken"
+        CFApi.session?.accessToken = nil
         XCTAssertNil(CFApi.session?.accessToken)
         
         let exp = expectation(description: "Request auth and re-request Orgs")
@@ -141,6 +142,7 @@ class CFApiTests: CFModelTestBase {
         
         CFApi.session = CFAccountFactory.session()
         CFApi.session?.refreshToken = "refreshToken"
+        CFApi.session?.accessToken = nil
         XCTAssertNil(CFApi.session?.accessToken)
         
         let exp = expectation(description: "Request auth and re-request Orgs")

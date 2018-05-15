@@ -6,7 +6,6 @@ import CFoundry
 @testable import CFoundry
 
 class CFRequestTests: XCTestCase {
-    let oauthToken = CFAccountFactory.oauthToken
     let baseApiURL = CFAccountFactory.target
     let baseLoginURL = CFAccountFactory.info().authEndpoint
     let baseLoggingURL = CFAccountFactory.info().dopplerLoggingEndpoint
@@ -18,7 +17,6 @@ class CFRequestTests: XCTestCase {
         
         account = CFAccountFactory.account()
         CFApi.session = CFAccountFactory.session()
-        CFApi.session?.accessToken = oauthToken
         try! CFAccountStore.create(account!)
     }
     
@@ -32,8 +30,8 @@ class CFRequestTests: XCTestCase {
     func testOAuthToken() {
         let oauthHeaderValue = CFRequest.info(baseApiURL).urlRequest?.value(forHTTPHeaderField: "Authorization")
         
-        XCTAssertEqual(CFApi.session?.accessToken!, "testToken", "token should not be nil when set")
-        XCTAssertEqual(oauthHeaderValue!, "Bearer testToken", "token should be entered into header when not nil")
+        XCTAssertEqual(CFApi.session?.accessToken!, "testAccessToken", "token should not be nil when set")
+        XCTAssertEqual(oauthHeaderValue!, "Bearer testAccessToken", "token should be entered into header when not nil")
     }
     
     func testInfoMember() {
@@ -129,7 +127,7 @@ private extension CFRequestTests {
     }
     
     func assertBearerToken(request: CFRequest) {
-        XCTAssertEqual(request.urlRequest?.value(forHTTPHeaderField: "Authorization"), "Bearer \(oauthToken)", "Request has the correct bearer token")
+        XCTAssertEqual(request.urlRequest?.value(forHTTPHeaderField: "Authorization"), "Bearer testAccessToken", "Request has the correct bearer token")
     }
     
     func assertGetParams(request: CFRequest, params: String) {
