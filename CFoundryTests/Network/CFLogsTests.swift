@@ -48,15 +48,11 @@ class CFLogsTests: XCTestCase {
         
         account = CFAccountFactory.account()
         try! CFAccountStore.create(account!)
-//        //CFSession.account(account!)
     }
     
     override func tearDown() {
         super.tearDown()
         
-//        CFSession.reset()
-//        try! CFAccountStore.delete(account!)
-//        removeAllStubs()
         OHHTTPStubs.removeAllStubs()
     }
     
@@ -73,7 +69,7 @@ class CFLogsTests: XCTestCase {
     func testCreateSocket() {
         let logs = CFLogs(appGuid: testAppGuid)
         
-        CFApi.session?.accessToken = "testToken"
+        CFApi.session = CFAccountFactory.session()
         
         do {
             let socket = try logs.createSocket()
@@ -86,12 +82,13 @@ class CFLogsTests: XCTestCase {
     func testCreateSocketRequest() {
         let logs = CFLogs(appGuid: testAppGuid)
         
+        CFApi.session = CFAccountFactory.session()
         CFApi.session?.accessToken = "testToken"
         
         do {
             let request = try logs.createSocketRequest()
             XCTAssertEqual(request.url?.absoluteString, "wss://doppler.test.io:443/apps/\(testAppGuid)/stream")
-            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "bearer testToken")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer testToken")
         } catch {
             XCTFail()
         }
@@ -116,9 +113,10 @@ class CFLogsTests: XCTestCase {
     }
     
     func testLogsAuthRecovery() {
+        CFApi.session = CFAccountFactory.session()
         stub(condition: isMethodPOST()) { _ in
             OHHTTPStubsResponse(
-            jsonObject: [],
+            jsonObject: ["accessToken": CFApi.session?.accessToken],
             statusCode: 200,
             headers: [ "Content-Type": "application/json" ]
         )}
@@ -139,35 +137,6 @@ class CFLogsTests: XCTestCase {
         let logs = FakeCFLogs(expectation: exp)
         
         logs.error(WebSocketError.invalidResponse("HTTP/1.1 401 Unauthorized"))
-        waitForExpectations(timeout: 1.0, handler: nil)
-    }
-
-    func testLogsAuthFail() {
-        stub(condition: isMethodGET()) { _ in
-            OHHTTPStubsResponse(
-                jsonObject: [],
-                statusCode: 500,
-                headers: [ "Content-Type": "application/json" ]
-            )}
-        class FakeCFLogs: CFLogs {
-            let expectation: XCTestExpectation
-            
-            init(expectation: XCTestExpectation) {
-                self.expectation = expectation
-                super.init(appGuid: "")
-            }
-            
-//            override func handleAuthFail() {
-//                expectation.fulfill()
-//            }
-        }
-
-        CFApi.session?.accessToken = ""
-        
-        let exp = expectation(description: "Logs Error")
-        let logs = FakeCFLogs(expectation: exp)
-        logs.error(WebSocketError.invalidResponse("HTTP/1.1 401 Unauthorized"))
-        
         waitForExpectations(timeout: 1.0, handler: nil)
     }
 }
