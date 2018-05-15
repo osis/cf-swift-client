@@ -1,15 +1,17 @@
 language: objective-c
 
-osx_image: xcode8.3
+osx_image: xcode9.3
 xcode_sdk: iphonesimulator
 xcode_workspace: CF Apps.xcworkspace
 xcode_scheme: CF Apps
 
 before_install:
   - set -o pipefail
-  - pod install
+  - brew install carthage || true
+  - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
 
-install: true
+before_script:
+  - carthage bootstrap --platform iOS --no-use-binaries --cache-builds
 
 script:
   - xcodebuild -workspace CF\ Apps.xcworkspace -scheme CF\ Apps -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone SE' build test
