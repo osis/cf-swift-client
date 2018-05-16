@@ -17,14 +17,10 @@ class CFRequestTests: XCTestCase {
         
         account = CFAccountFactory.account()
         CFApi.session = CFAccountFactory.session()
-        try! CFAccountStore.create(account!)
     }
     
     override func tearDown() {
         super.tearDown()
-        
-//        CFSession.reset()
-        try! CFAccountStore.delete(account!)
     }
     
     func testOAuthToken() {

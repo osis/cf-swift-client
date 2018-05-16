@@ -1,10 +1,11 @@
 import Foundation
-import Locksmith
 import SwiftyJSON
 import ObjectMapper
+import Locksmith
 
-public struct CFAccount: ReadableSecureStorable, CreateableSecureStorable, DeleteableSecureStorable, GenericPasswordSecureStorable {
-    
+//public struct CFAccount: ReadableSecureStorable, CreateableSecureStorable, DeleteableSecureStorable, GenericPasswordSecureStorable {
+public struct CFAccount {
+
     public let target: String
     public let username: String
     public let password: String

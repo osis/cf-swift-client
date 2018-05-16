@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		65107D5E20A67C9D0078BEB5 /* CFAppSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65107D5D20A67C9D0078BEB5 /* CFAppSummaryTests.swift */; };
-		655EFA562030F1450095DBB7 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC89202FF29D00933176 /* Locksmith.framework */; };
 		656D166520309632002B1905 /* app_summary.json in Resources */ = {isa = PBXBuildFile; fileRef = 656D165F20309631002B1905 /* app_summary.json */; };
 		656D166620309632002B1905 /* app_stats.json in Resources */ = {isa = PBXBuildFile; fileRef = 656D166020309631002B1905 /* app_stats.json */; };
 		656D166720309632002B1905 /* apps.json in Resources */ = {isa = PBXBuildFile; fileRef = 656D166120309631002B1905 /* apps.json */; };
@@ -20,8 +19,6 @@
 		656D167120309639002B1905 /* CFApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D166D20309639002B1905 /* CFApiTests.swift */; };
 		656D167220309639002B1905 /* CFRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D166E20309639002B1905 /* CFRequestTests.swift */; };
 		656D167420309649002B1905 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D167320309649002B1905 /* StringTests.swift */; };
-		656D167720309652002B1905 /* CFStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D167520309652002B1905 /* CFStoreTests.swift */; };
-		656D167820309652002B1905 /* CFAccountStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D167620309652002B1905 /* CFAccountStoreTests.swift */; };
 		656D167B203096A2002B1905 /* CFAccountFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D167A203096A2002B1905 /* CFAccountFactory.swift */; };
 		656D168120309AD9002B1905 /* LogMessageStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168020309AD9002B1905 /* LogMessageStringTests.swift */; };
 		656D168320309CA2002B1905 /* CFServiceBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168220309CA2002B1905 /* CFServiceBinding.swift */; };
@@ -34,6 +31,7 @@
 		656D169220309D64002B1905 /* CFSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168B20309D64002B1905 /* CFSpaceTests.swift */; };
 		656D16942030A14C002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
 		656D16952030A5F0002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
+		6573348C20AB9C0900A05363 /* CFAccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573348B20AB9C0900A05363 /* CFAccountTests.swift */; };
 		658EAC16202FCA8200933176 /* CFoundry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC0C202FCA8200933176 /* CFoundry.framework */; };
 		658EAC45202FDC5F00933176 /* CFEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC3F202FDC5F00933176 /* CFEvent.swift */; };
 		658EAC46202FDC5F00933176 /* CFInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC40202FDC5F00933176 /* CFInfo.swift */; };
@@ -53,7 +51,6 @@
 		658EAC76202FEBF600933176 /* CFLogs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC2D202FDBD600933176 /* CFLogs.swift */; };
 		658EAC77202FEBF600933176 /* CFRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC2E202FDBD600933176 /* CFRequest.swift */; };
 		658EAC78202FEBF600933176 /* CFResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC2F202FDBD600933176 /* CFResponse.swift */; };
-		658EAC8A202FF29E00933176 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC89202FF29D00933176 /* Locksmith.framework */; };
 		658EAC90202FFF0A00933176 /* CFSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC8F202FFF0A00933176 /* CFSession.swift */; };
 		658EAC98203000F400933176 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC97203000F400933176 /* String.swift */; };
 		65A33077203A3F41008E803A /* SwiftWebSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A33076203A3F41008E803A /* SwiftWebSocket.framework */; };
@@ -62,7 +59,6 @@
 		65A3307B203A40A0008E803A /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC8B202FFE8A00933176 /* ObjectMapper.framework */; };
 		65A3307F203A7313008E803A /* CFModelTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A3307E203A7313008E803A /* CFModelTestBase.swift */; };
 		65A33081203A774D008E803A /* orgs.json in Resources */ = {isa = PBXBuildFile; fileRef = 65A33080203A774D008E803A /* orgs.json */; };
-		65B031692030022F001CA690 /* CFAccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B031652030022F001CA690 /* CFAccountStore.swift */; };
 		65B0316A2030022F001CA690 /* CFAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B031662030022F001CA690 /* CFAccount.swift */; };
 		65B0316C20300739001CA690 /* LogMessageString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0316B20300739001CA690 /* LogMessageString.swift */; };
 		65BE0FCE203911FA00191045 /* spaces.json in Resources */ = {isa = PBXBuildFile; fileRef = 65BE0FCD203911FA00191045 /* spaces.json */; };
@@ -106,8 +102,6 @@
 		656D166D20309639002B1905 /* CFApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFApiTests.swift; sourceTree = "<group>"; };
 		656D166E20309639002B1905 /* CFRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFRequestTests.swift; sourceTree = "<group>"; };
 		656D167320309649002B1905 /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
-		656D167520309652002B1905 /* CFStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFStoreTests.swift; sourceTree = "<group>"; };
-		656D167620309652002B1905 /* CFAccountStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAccountStoreTests.swift; sourceTree = "<group>"; };
 		656D167A203096A2002B1905 /* CFAccountFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAccountFactory.swift; sourceTree = "<group>"; };
 		656D168020309AD9002B1905 /* LogMessageStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogMessageStringTests.swift; sourceTree = "<group>"; };
 		656D168220309CA2002B1905 /* CFServiceBinding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFServiceBinding.swift; sourceTree = "<group>"; };
@@ -119,6 +113,7 @@
 		656D168A20309D64002B1905 /* CFAppInstanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAppInstanceTests.swift; sourceTree = "<group>"; };
 		656D168B20309D64002B1905 /* CFSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFSpaceTests.swift; sourceTree = "<group>"; };
 		656D16932030A14C002B1905 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
+		6573348B20AB9C0900A05363 /* CFAccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFAccountTests.swift; sourceTree = "<group>"; };
 		658EAC0C202FCA8200933176 /* CFoundry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFoundry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		658EAC10202FCA8200933176 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		658EAC15202FCA8200933176 /* CFoundryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CFoundryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,7 +145,6 @@
 		65A33076203A3F41008E803A /* SwiftWebSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftWebSocket.framework; path = Carthage/Build/iOS/SwiftWebSocket.framework; sourceTree = "<group>"; };
 		65A3307E203A7313008E803A /* CFModelTestBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFModelTestBase.swift; sourceTree = "<group>"; };
 		65A33080203A774D008E803A /* orgs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = orgs.json; sourceTree = "<group>"; };
-		65B031652030022F001CA690 /* CFAccountStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAccountStore.swift; sourceTree = "<group>"; };
 		65B031662030022F001CA690 /* CFAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAccount.swift; sourceTree = "<group>"; };
 		65B0316B20300739001CA690 /* LogMessageString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogMessageString.swift; sourceTree = "<group>"; };
 		65BE0FCD203911FA00191045 /* spaces.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = spaces.json; sourceTree = "<group>"; };
@@ -176,7 +170,6 @@
 				65A3307B203A40A0008E803A /* ObjectMapper.framework in Frameworks */,
 				656D16942030A14C002B1905 /* OHHTTPStubs.framework in Frameworks */,
 				65A3307A203A4053008E803A /* Alamofire.framework in Frameworks */,
-				658EAC8A202FF29E00933176 /* Locksmith.framework in Frameworks */,
 				658EAC6C202FE75C00933176 /* SwiftyJSON.framework in Frameworks */,
 				658EAC6A202FE60300933176 /* ProtocolBuffers.framework in Frameworks */,
 			);
@@ -186,7 +179,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				655EFA562030F1450095DBB7 /* Locksmith.framework in Frameworks */,
 				656D16952030A5F0002B1905 /* OHHTTPStubs.framework in Frameworks */,
 				658EAC16202FCA8200933176 /* CFoundry.framework in Frameworks */,
 			);
@@ -206,8 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				656D167A203096A2002B1905 /* CFAccountFactory.swift */,
-				656D167620309652002B1905 /* CFAccountStoreTests.swift */,
-				656D167520309652002B1905 /* CFStoreTests.swift */,
+				6573348B20AB9C0900A05363 /* CFAccountTests.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -298,7 +289,6 @@
 			isa = PBXGroup;
 			children = (
 				65B0316B20300739001CA690 /* LogMessageString.swift */,
-				65B0316120300223001CA690 /* Data */,
 				658EAC96203000E100933176 /* Extensions */,
 				658EAC10202FCA8200933176 /* Info.plist */,
 				658EAC32202FDC1A00933176 /* Models */,
@@ -383,14 +373,6 @@
 				658EAC97203000F400933176 /* String.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		65B0316120300223001CA690 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				65B031652030022F001CA690 /* CFAccountStore.swift */,
-			);
-			path = Data;
 			sourceTree = "<group>";
 		};
 		65F5613A20310516003FA96F /* Test Host */ = {
@@ -564,7 +546,6 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Locksmith.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OHHTTPStubs.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ProtocolBuffers.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftWebSocket.framework",
@@ -574,7 +555,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/ObjectMapper.framework",
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Locksmith.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/OHHTTPStubs.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ProtocolBuffers.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftWebSocket.framework",
@@ -593,7 +573,6 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Locksmith.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OHHTTPStubs.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ProtocolBuffers.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftWebSocket.framework",
@@ -604,7 +583,6 @@
 			);
 			name = "Run Script";
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Locksmith.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/OHHTTPStubs.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ProtocolBuffers.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftWebSocket.framework",
@@ -636,7 +614,6 @@
 				65F62E9C209005FD005CF4FC /* CFAppStats.swift in Sources */,
 				658EAC46202FDC5F00933176 /* CFInfo.swift in Sources */,
 				658EAC5B202FDC9B00933176 /* Events.Log.proto.swift in Sources */,
-				65B031692030022F001CA690 /* CFAccountStore.swift in Sources */,
 				658EAC59202FDC9B00933176 /* Events.Envelope.proto.swift in Sources */,
 				658EAC5E202FDC9B00933176 /* Events.Metric.proto.swift in Sources */,
 				658EAC4A202FDC5F00933176 /* CFAppInstance.swift in Sources */,
@@ -656,16 +633,15 @@
 			files = (
 				65A3307F203A7313008E803A /* CFModelTestBase.swift in Sources */,
 				656D168120309AD9002B1905 /* LogMessageStringTests.swift in Sources */,
-				656D167720309652002B1905 /* CFStoreTests.swift in Sources */,
 				656D169020309D64002B1905 /* CFAppsTests.swift in Sources */,
 				656D167020309639002B1905 /* CFLogsTests.swift in Sources */,
 				65107D5E20A67C9D0078BEB5 /* CFAppSummaryTests.swift in Sources */,
 				656D168E20309D64002B1905 /* CFOrgTests.swift in Sources */,
 				656D169220309D64002B1905 /* CFSpaceTests.swift in Sources */,
-				656D167820309652002B1905 /* CFAccountStoreTests.swift in Sources */,
 				656D167B203096A2002B1905 /* CFAccountFactory.swift in Sources */,
 				656D167120309639002B1905 /* CFApiTests.swift in Sources */,
 				656D168F20309D64002B1905 /* CFServiceBindingTests.swift in Sources */,
+				6573348C20AB9C0900A05363 /* CFAccountTests.swift in Sources */,
 				656D169120309D64002B1905 /* CFAppInstanceTests.swift in Sources */,
 				656D167220309639002B1905 /* CFRequestTests.swift in Sources */,
 				656D168C20309D64002B1905 /* CFEventTests.swift in Sources */,

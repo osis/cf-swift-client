@@ -47,7 +47,6 @@ class CFLogsTests: XCTestCase {
         super.setUp()
         
         account = CFAccountFactory.account()
-        try! CFAccountStore.create(account!)
     }
     
     override func tearDown() {
