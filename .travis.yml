@@ -8,7 +8,6 @@ before_install:
 
 before_script:
   - carthage bootstrap --platform iOS --no-use-binaries --cache-builds
-  - carthage build --platform iOS --no-use-binaries --cache-builds --no-skip-current
 
 script:
   - xcodebuild -project CFoundry.xcodeproj -scheme "CFoundry iOS" -destination "platform=iOS Simulator,name=iPhone SE" build-for-testing test | xcpretty
