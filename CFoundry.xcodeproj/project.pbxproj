@@ -137,12 +137,6 @@
 		65B0316B20300739001CA690 /* LogMessageString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogMessageString.swift; sourceTree = "<group>"; };
 		65BE0FCD203911FA00191045 /* spaces.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = spaces.json; sourceTree = "<group>"; };
 		65BE0FCF20391E0D00191045 /* CFMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFMetadata.swift; sourceTree = "<group>"; };
-		65F5613B20310516003FA96F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		65F5613D20310516003FA96F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		65F5614020310516003FA96F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		65F5614220310517003FA96F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		65F5614520310517003FA96F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		65F5614720310517003FA96F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65F62E99208D816A005CF4FC /* tokens.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tokens.json; sourceTree = "<group>"; };
 		65F62E9B209005FD005CF4FC /* CFAppStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFAppStats.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,10 +182,10 @@
 			children = (
 				656D166D20309639002B1905 /* CFApiTests.swift */,
 				656D166C20309639002B1905 /* CFLogsTests.swift */,
+				65BE0FCF20391E0D00191045 /* CFMetadata.swift */,
 				656D166E20309639002B1905 /* CFRequestTests.swift */,
 				656D166B20309639002B1905 /* CFSessionTests.swift */,
 				656D165E20309616002B1905 /* Fixtures */,
-				65BE0FCF20391E0D00191045 /* CFMetadata.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -233,13 +227,13 @@
 			children = (
 				656D168A20309D64002B1905 /* CFAppInstanceTests.swift */,
 				656D168920309D64002B1905 /* CFAppsTests.swift */,
+				65107D5D20A67C9D0078BEB5 /* CFAppSummaryTests.swift */,
 				656D168520309D63002B1905 /* CFEventTests.swift */,
 				656D168620309D63002B1905 /* CFInfoTests.swift */,
 				65A3307E203A7313008E803A /* CFModelTestBase.swift */,
 				656D168720309D63002B1905 /* CFOrgTests.swift */,
 				656D168820309D63002B1905 /* CFServiceBindingTests.swift */,
 				656D168B20309D64002B1905 /* CFSpaceTests.swift */,
-				65107D5D20A67C9D0078BEB5 /* CFAppSummaryTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -249,7 +243,6 @@
 			children = (
 				658EAC0E202FCA8200933176 /* CFoundry */,
 				658EAC19202FCA8200933176 /* CFoundryTests */,
-				65F5613A20310516003FA96F /* Test Host */,
 				658EAC0D202FCA8200933176 /* Products */,
 				658EAC68202FE60200933176 /* Frameworks */,
 			);
@@ -352,19 +345,6 @@
 				658EAC97203000F400933176 /* String.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		65F5613A20310516003FA96F /* Test Host */ = {
-			isa = PBXGroup;
-			children = (
-				65F5613B20310516003FA96F /* AppDelegate.swift */,
-				65F5613D20310516003FA96F /* ViewController.swift */,
-				65F5613F20310516003FA96F /* Main.storyboard */,
-				65F5614220310517003FA96F /* Assets.xcassets */,
-				65F5614420310517003FA96F /* LaunchScreen.storyboard */,
-				65F5614720310517003FA96F /* Info.plist */,
-			);
-			path = "Test Host";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -610,25 +590,6 @@
 			targetProxy = 658EAC17202FCA8200933176 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		65F5613F20310516003FA96F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				65F5614020310516003FA96F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		65F5614420310517003FA96F /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				65F5614520310517003FA96F /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		658EAC1E202FCA8200933176 /* Debug */ = {
