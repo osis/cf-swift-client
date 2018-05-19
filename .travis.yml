@@ -1,20 +1,13 @@
 language: objective-c
-
 osx_image: xcode9.3
-xcode_sdk: iphonesimulator
-xcode_workspace: CF Apps.xcworkspace
-xcode_scheme: CF Apps
+xcode_sdk: iphonesimulator11.0
 
 before_install:
   - set -o pipefail
-  - brew install carthage || true
-  - gem install xcpretty-travis-formatter --no-rdoc --no-ri --no-document --quiet
+  - brew upgrade carthage || true
 
 before_script:
   - carthage bootstrap --platform iOS --no-use-binaries --cache-builds
 
 script:
-  - xcodebuild -project CFoundry.xcodeproj -scheme "CFoundry iOS" -destination "platform=iOS Simulator,name=iPhone SE" build-for-testing test
-
-after_success:
-  - sleep 5
+  - xcodebuild -project CFoundry.xcodeproj -scheme "CFoundry iOS" -destination "platform=iOS Simulator,name=iPhone SE" build-for-testing test | xcpretty
