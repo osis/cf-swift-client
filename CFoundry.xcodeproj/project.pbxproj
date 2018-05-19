@@ -32,7 +32,7 @@
 		656D16942030A14C002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
 		656D16952030A5F0002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
 		6573348C20AB9C0900A05363 /* CFAccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573348B20AB9C0900A05363 /* CFAccountTests.swift */; };
-		658EAC16202FCA8200933176 /* CFoundry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC0C202FCA8200933176 /* CFoundry.framework */; };
+		658EAC16202FCA8200933176 /* CFoundry_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */; };
 		658EAC45202FDC5F00933176 /* CFEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC3F202FDC5F00933176 /* CFEvent.swift */; };
 		658EAC46202FDC5F00933176 /* CFInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC40202FDC5F00933176 /* CFInfo.swift */; };
 		658EAC47202FDC5F00933176 /* CFOrg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC41202FDC5F00933176 /* CFOrg.swift */; };
@@ -63,11 +63,6 @@
 		65B0316C20300739001CA690 /* LogMessageString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B0316B20300739001CA690 /* LogMessageString.swift */; };
 		65BE0FCE203911FA00191045 /* spaces.json in Resources */ = {isa = PBXBuildFile; fileRef = 65BE0FCD203911FA00191045 /* spaces.json */; };
 		65BE0FD020391E0D00191045 /* CFMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BE0FCF20391E0D00191045 /* CFMetadata.swift */; };
-		65F5613C20310516003FA96F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5613B20310516003FA96F /* AppDelegate.swift */; };
-		65F5613E20310516003FA96F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F5613D20310516003FA96F /* ViewController.swift */; };
-		65F5614120310516003FA96F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65F5613F20310516003FA96F /* Main.storyboard */; };
-		65F5614320310517003FA96F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65F5614220310517003FA96F /* Assets.xcassets */; };
-		65F5614620310517003FA96F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65F5614420310517003FA96F /* LaunchScreen.storyboard */; };
 		65F62E9A208D816A005CF4FC /* tokens.json in Resources */ = {isa = PBXBuildFile; fileRef = 65F62E99208D816A005CF4FC /* tokens.json */; };
 		65F62E9C209005FD005CF4FC /* CFAppStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F62E9B209005FD005CF4FC /* CFAppStats.swift */; };
 /* End PBXBuildFile section */
@@ -79,13 +74,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 658EAC0B202FCA8200933176;
 			remoteInfo = CFoundry;
-		};
-		65F5614B20310538003FA96F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 658EAC03202FCA8200933176 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 65F5613820310516003FA96F;
-			remoteInfo = "Test Host";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -114,9 +102,9 @@
 		656D168B20309D64002B1905 /* CFSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFSpaceTests.swift; sourceTree = "<group>"; };
 		656D16932030A14C002B1905 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		6573348B20AB9C0900A05363 /* CFAccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFAccountTests.swift; sourceTree = "<group>"; };
-		658EAC0C202FCA8200933176 /* CFoundry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFoundry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFoundry_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		658EAC10202FCA8200933176 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		658EAC15202FCA8200933176 /* CFoundryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CFoundryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		658EAC15202FCA8200933176 /* CFoundry iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CFoundry iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		658EAC1C202FCA8200933176 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		658EAC2C202FDBD600933176 /* CFApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFApi.swift; sourceTree = "<group>"; };
 		658EAC2D202FDBD600933176 /* CFLogs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFLogs.swift; sourceTree = "<group>"; };
@@ -149,7 +137,6 @@
 		65B0316B20300739001CA690 /* LogMessageString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogMessageString.swift; sourceTree = "<group>"; };
 		65BE0FCD203911FA00191045 /* spaces.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = spaces.json; sourceTree = "<group>"; };
 		65BE0FCF20391E0D00191045 /* CFMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFMetadata.swift; sourceTree = "<group>"; };
-		65F5613920310516003FA96F /* Test Host.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Test Host.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65F5613B20310516003FA96F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65F5613D20310516003FA96F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		65F5614020310516003FA96F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -180,14 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				656D16952030A5F0002B1905 /* OHHTTPStubs.framework in Frameworks */,
-				658EAC16202FCA8200933176 /* CFoundry.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		65F5613620310516003FA96F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				658EAC16202FCA8200933176 /* CFoundry_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,9 +258,8 @@
 		658EAC0D202FCA8200933176 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				658EAC0C202FCA8200933176 /* CFoundry.framework */,
-				658EAC15202FCA8200933176 /* CFoundryTests.xctest */,
-				65F5613920310516003FA96F /* Test Host.app */,
+				658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */,
+				658EAC15202FCA8200933176 /* CFoundry iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -401,9 +380,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		658EAC0B202FCA8200933176 /* CFoundry */ = {
+		658EAC0B202FCA8200933176 /* CFoundry iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 658EAC20202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundry" */;
+			buildConfigurationList = 658EAC20202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundry iOS" */;
 			buildPhases = (
 				658EAC07202FCA8200933176 /* Sources */,
 				658EAC08202FCA8200933176 /* Frameworks */,
@@ -415,14 +394,14 @@
 			);
 			dependencies = (
 			);
-			name = CFoundry;
+			name = "CFoundry iOS";
 			productName = CFoundry;
-			productReference = 658EAC0C202FCA8200933176 /* CFoundry.framework */;
+			productReference = 658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		658EAC14202FCA8200933176 /* CFoundryTests */ = {
+		658EAC14202FCA8200933176 /* CFoundry iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 658EAC23202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundryTests" */;
+			buildConfigurationList = 658EAC23202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundry iOS Tests" */;
 			buildPhases = (
 				658EAC11202FCA8200933176 /* Sources */,
 				658EAC12202FCA8200933176 /* Frameworks */,
@@ -433,29 +412,11 @@
 			);
 			dependencies = (
 				658EAC18202FCA8200933176 /* PBXTargetDependency */,
-				65F5614C20310538003FA96F /* PBXTargetDependency */,
 			);
-			name = CFoundryTests;
+			name = "CFoundry iOS Tests";
 			productName = CFoundryTests;
-			productReference = 658EAC15202FCA8200933176 /* CFoundryTests.xctest */;
+			productReference = 658EAC15202FCA8200933176 /* CFoundry iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		65F5613820310516003FA96F /* Test Host */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 65F5614820310517003FA96F /* Build configuration list for PBXNativeTarget "Test Host" */;
-			buildPhases = (
-				65F5613520310516003FA96F /* Sources */,
-				65F5613620310516003FA96F /* Frameworks */,
-				65F5613720310516003FA96F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Test Host";
-			productName = "Test Host";
-			productReference = 65F5613920310516003FA96F /* Test Host.app */;
-			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -474,12 +435,7 @@
 					};
 					658EAC14202FCA8200933176 = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 65F5613820310516003FA96F;
-					};
-					65F5613820310516003FA96F = {
-						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -496,9 +452,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				658EAC0B202FCA8200933176 /* CFoundry */,
-				658EAC14202FCA8200933176 /* CFoundryTests */,
-				65F5613820310516003FA96F /* Test Host */,
+				658EAC0B202FCA8200933176 /* CFoundry iOS */,
+				658EAC14202FCA8200933176 /* CFoundry iOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -524,16 +479,6 @@
 				656D166920309632002B1905 /* info.json in Resources */,
 				656D166720309632002B1905 /* apps.json in Resources */,
 				656D166620309632002B1905 /* app_stats.json in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		65F5613720310516003FA96F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				65F5614620310517003FA96F /* LaunchScreen.storyboard in Resources */,
-				65F5614320310517003FA96F /* Assets.xcassets in Resources */,
-				65F5614120310516003FA96F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,27 +601,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		65F5613520310516003FA96F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				65F5613E20310516003FA96F /* ViewController.swift in Sources */,
-				65F5613C20310516003FA96F /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		658EAC18202FCA8200933176 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 658EAC0B202FCA8200933176 /* CFoundry */;
+			target = 658EAC0B202FCA8200933176 /* CFoundry iOS */;
 			targetProxy = 658EAC17202FCA8200933176 /* PBXContainerItemProxy */;
-		};
-		65F5614C20310538003FA96F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 65F5613820310516003FA96F /* Test Host */;
-			targetProxy = 65F5614B20310538003FA96F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -729,7 +660,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -789,7 +720,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -870,8 +801,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4CPT54BT54;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -880,9 +811,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dwayneforde.CFoundryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Test Host.app/Test Host";
 			};
 			name = Debug;
 		};
@@ -890,8 +821,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4CPT54BT54;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -900,37 +831,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dwayneforde.CFoundryTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Test Host.app/Test Host";
-			};
-			name = Release;
-		};
-		65F5614920310517003FA96F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Test Host/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.dwayneforde.Test-Host";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		65F5614A20310517003FA96F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Test Host/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.dwayneforde.Test-Host";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -948,7 +849,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		658EAC20202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundry" */ = {
+		658EAC20202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundry iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				658EAC21202FCA8200933176 /* Debug */,
@@ -957,20 +858,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		658EAC23202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundryTests" */ = {
+		658EAC23202FCA8200933176 /* Build configuration list for PBXNativeTarget "CFoundry iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				658EAC24202FCA8200933176 /* Debug */,
 				658EAC25202FCA8200933176 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		65F5614820310517003FA96F /* Build configuration list for PBXNativeTarget "Test Host" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				65F5614920310517003FA96F /* Debug */,
-				65F5614A20310517003FA96F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
