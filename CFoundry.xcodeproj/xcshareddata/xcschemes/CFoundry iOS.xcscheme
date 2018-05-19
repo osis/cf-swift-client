@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "658EAC0B202FCA8200933176"
-               BuildableName = "CFoundry_iOS.framework"
+               BuildableName = "CFoundry.framework"
                BlueprintName = "CFoundry iOS"
                ReferencedContainer = "container:CFoundry.xcodeproj">
             </BuildableReference>
@@ -43,7 +43,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "658EAC0B202FCA8200933176"
-            BuildableName = "CFoundry_iOS.framework"
+            BuildableName = "CFoundry.framework"
             BlueprintName = "CFoundry iOS"
             ReferencedContainer = "container:CFoundry.xcodeproj">
          </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "658EAC0B202FCA8200933176"
-            BuildableName = "CFoundry_iOS.framework"
+            BuildableName = "CFoundry.framework"
             BlueprintName = "CFoundry iOS"
             ReferencedContainer = "container:CFoundry.xcodeproj">
          </BuildableReference>
@@ -83,7 +83,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "658EAC0B202FCA8200933176"
-            BuildableName = "CFoundry_iOS.framework"
+            BuildableName = "CFoundry.framework"
             BlueprintName = "CFoundry iOS"
             ReferencedContainer = "container:CFoundry.xcodeproj">
          </BuildableReference>

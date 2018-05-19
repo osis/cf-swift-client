@@ -29,10 +29,9 @@
 		656D169020309D64002B1905 /* CFAppsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168920309D64002B1905 /* CFAppsTests.swift */; };
 		656D169120309D64002B1905 /* CFAppInstanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168A20309D64002B1905 /* CFAppInstanceTests.swift */; };
 		656D169220309D64002B1905 /* CFSpaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D168B20309D64002B1905 /* CFSpaceTests.swift */; };
-		656D16942030A14C002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
 		656D16952030A5F0002B1905 /* OHHTTPStubs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656D16932030A14C002B1905 /* OHHTTPStubs.framework */; };
 		6573348C20AB9C0900A05363 /* CFAccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6573348B20AB9C0900A05363 /* CFAccountTests.swift */; };
-		658EAC16202FCA8200933176 /* CFoundry_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */; };
+		658EAC16202FCA8200933176 /* CFoundry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 658EAC0C202FCA8200933176 /* CFoundry.framework */; };
 		658EAC45202FDC5F00933176 /* CFEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC3F202FDC5F00933176 /* CFEvent.swift */; };
 		658EAC46202FDC5F00933176 /* CFInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC40202FDC5F00933176 /* CFInfo.swift */; };
 		658EAC47202FDC5F00933176 /* CFOrg.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658EAC41202FDC5F00933176 /* CFOrg.swift */; };
@@ -102,7 +101,7 @@
 		656D168B20309D64002B1905 /* CFSpaceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CFSpaceTests.swift; sourceTree = "<group>"; };
 		656D16932030A14C002B1905 /* OHHTTPStubs.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OHHTTPStubs.framework; path = Carthage/Build/iOS/OHHTTPStubs.framework; sourceTree = "<group>"; };
 		6573348B20AB9C0900A05363 /* CFAccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFAccountTests.swift; sourceTree = "<group>"; };
-		658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFoundry_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		658EAC0C202FCA8200933176 /* CFoundry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CFoundry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		658EAC10202FCA8200933176 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		658EAC15202FCA8200933176 /* CFoundry iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CFoundry iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		658EAC1C202FCA8200933176 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -149,7 +148,6 @@
 				65A33078203A3F4D008E803A /* AlamofireObjectMapper.framework in Frameworks */,
 				65A33077203A3F41008E803A /* SwiftWebSocket.framework in Frameworks */,
 				65A3307B203A40A0008E803A /* ObjectMapper.framework in Frameworks */,
-				656D16942030A14C002B1905 /* OHHTTPStubs.framework in Frameworks */,
 				65A3307A203A4053008E803A /* Alamofire.framework in Frameworks */,
 				658EAC6C202FE75C00933176 /* SwiftyJSON.framework in Frameworks */,
 				658EAC6A202FE60300933176 /* ProtocolBuffers.framework in Frameworks */,
@@ -160,8 +158,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				658EAC16202FCA8200933176 /* CFoundry.framework in Frameworks */,
 				656D16952030A5F0002B1905 /* OHHTTPStubs.framework in Frameworks */,
-				658EAC16202FCA8200933176 /* CFoundry_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,7 +249,7 @@
 		658EAC0D202FCA8200933176 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */,
+				658EAC0C202FCA8200933176 /* CFoundry.framework */,
 				658EAC15202FCA8200933176 /* CFoundry iOS Tests.xctest */,
 			);
 			name = Products;
@@ -376,7 +374,7 @@
 			);
 			name = "CFoundry iOS";
 			productName = CFoundry;
-			productReference = 658EAC0C202FCA8200933176 /* CFoundry_iOS.framework */;
+			productReference = 658EAC0C202FCA8200933176 /* CFoundry.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		658EAC14202FCA8200933176 /* CFoundry iOS Tests */ = {
@@ -500,7 +498,6 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/OHHTTPStubs.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ProtocolBuffers.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftWebSocket.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
@@ -511,7 +508,6 @@
 			);
 			name = "Run Script";
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/OHHTTPStubs.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/ProtocolBuffers.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftWebSocket.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SwiftyJSON.framework",
@@ -647,6 +643,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -699,6 +696,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -726,7 +724,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dwayneforde.CFoundry;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = CFoundry;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -755,7 +753,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.dwayneforde.CFoundry;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = CFoundry;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
