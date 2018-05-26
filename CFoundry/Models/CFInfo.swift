@@ -2,15 +2,15 @@ import Foundation
 import ObjectMapper
 
 public class CFInfo: ImmutableMappable {
-    var support: String
-    var description: String
-    var tokenEndpoint: String
-    var authEndpoint: String
-    var apiVersion: String
-    var appSSHEndpoint: String
-    var appSSHHostKeyFingerprint: String
-    var appSSHOAuthClient: String
-    var dopplerLoggingEndpoint: String
+    public var support: String
+    public var description: String
+    public var tokenEndpoint: String
+    public var authEndpoint: String
+    public var apiVersion: String
+    public var appSSHEndpoint: String
+    public var appSSHHostKeyFingerprint: String
+    public var appSSHOAuthClient: String
+    public var dopplerLoggingEndpoint: String
     
     public required init(map: Map) throws {
         support = try map.value("support")
@@ -49,7 +49,7 @@ public class CFInfo: ImmutableMappable {
       static let dopplerLoggingEndpoint = "doppler_logging_endpoint"
     }
     
-    func serialize() -> [String : String] {
+    public func serialize() -> [String : String] {
         return [
             Keys.support : support,
             Keys.description : description,

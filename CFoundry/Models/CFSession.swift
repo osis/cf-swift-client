@@ -5,11 +5,11 @@ import Alamofire
 public class CFSession {
     static let loginAuthToken = "Y2Y6"
     
-    let info: CFInfo
-    let target: String
+    public let info: CFInfo
+    public let target: String
     
-    var accessToken: String?
-    var refreshToken: String?
+    public var accessToken: String?
+    public var refreshToken: String?
     
     init(account: CFAccount) {
         self.info = account.info
