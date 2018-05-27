@@ -1,11 +1,11 @@
 # CFoundry: Cloud Foundry Swift Client
-[![Build Status](https://travis-ci.org/osis/cf-swift-sdk.svg?branch=master)](https://travis-ci.org/osis/cf-swift-sdk) [![codebeat badge](https://codebeat.co/badges/0d77c411-7bc1-403b-98fd-855add993248)](https://codebeat.co/projects/github-com-osis-cf-swift-sdk-master) ![Platform](https://img.shields.io/badge/platforms-iOS%209.0+-333333.svg)
+[![Build Status](https://travis-ci.org/osis/cf-swift-sdk.svg?branch=master)](https://travis-ci.org/osis/cf-swift-sdk) [![codebeat badge](https://codebeat.co/badges/0d77c411-7bc1-403b-98fd-855add993248)](https://codebeat.co/projects/github-com-osis-cf-swift-sdk-master) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![CocoaPods](https://img.shields.io/cocoapods/v/CFoundry.svg) ![Platform](https://img.shields.io/badge/platforms-iOS%209.0+-333333.svg)
 
 ## Features
 
 - Compatible with Cloud Foundry v2 API
 - Ability to list Organizations, Spaces, and Applications
-- Details such App Summary, Service Bindings, Application Instance information, and Application Events
+- Details such Application Summary, Service Bindings, Instance information, and Events
 - Recent & Realtime Application Log Streaming
 
 ## Installation
