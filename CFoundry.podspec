@@ -2,14 +2,14 @@ Pod::Spec.new do |s|
   s.name          = 'CFoundry'
   s.version       = '0.0.1'
   s.license       = { :type => 'Apache License, Version 2.0' }
-  s.homepage      = 'https://github.com/osis/cf-ios-sdk'
+  s.homepage      = 'https://github.com/osis/cf-swift-client.git'
   s.authors       = { 'Dwayne Forde' => 'dwayne.forde@gmail.com' }
   s.summary       = 'A Cloud Foundry SDK for Cocoa Applications'
   s.swift_version = '3.3'
 
   s.ios.deployment_target  = '9.0'
 
-  s.source        = { :git => 'https://github.com/osis/cf-ios-sdk.git', :tag => s.version.to_s }
+  s.source        = { :git => 'https://github.com/osis/cf-swift-client.git', :tag => s.version.to_s }
   s.source_files  = 'CFoundry/**/*.swift'
 
   s.dependency 'Alamofire', '~> 4.7.2'
