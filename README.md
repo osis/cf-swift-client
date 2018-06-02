@@ -5,7 +5,7 @@
 
 - Compatible with Cloud Foundry v2 API
 - Ability to list Organizations, Spaces, and Applications
-- Details such Application Summary, Service Bindings, Instance information, and Events
+- Details such as Application Summary, Service Bindings, Instance information, and Events
 - Recent & Realtime Application Log Streaming
 
 ## Installation
