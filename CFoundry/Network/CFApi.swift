@@ -51,10 +51,10 @@ public class CFApi {
         performArrayRequest(t: CFSpace.self, cfRequest: spacesRequest, completed: completed)
     }
     
-    public static func apps(orgGuid: String, page: Int, searchText: String, completed: @escaping (_ orgs: [CFApp]?, _ error: Error?) -> Void) {
-        let orgsRequest = CFRequest.apps(orgGuid, page, searchText)
+    public static func apps(orgGuid: String, page: Int, searchText: String, completed: @escaping (_ apps: [CFApp]?, _ error: Error?) -> Void) {
+        let appsRequest = CFRequest.apps(orgGuid, page, searchText)
         
-        performArrayRequest(t: CFApp.self, cfRequest: orgsRequest, completed: completed)
+        performArrayRequest(t: CFApp.self, cfRequest: appsRequest, completed: completed)
     }
     
     public static func appSummary(appGuid: String, completed: @escaping (_ appSummary: CFApp?, _ error: Error?) -> Void) {
