@@ -88,6 +88,23 @@ class CFRequestTests: XCTestCase {
         assertGetParams(request: searchRequest, params: searchParams)
     }
     
+    func testAppUpdateMember() {
+        let appGuid = "abc123"
+        let path = "/v2/apps/\(appGuid)"
+        let body = "{\"name\":\"updated\"}"
+        let request = CFRequest.appUpdate(appGuid, ["name":"updated"])
+        
+        let acceptHeader = request.urlRequest?.value(forHTTPHeaderField: "Accept")!
+        let requestBody = String(data: (request.urlRequest?.httpBody)!, encoding: .utf8)
+        
+        XCTAssertEqual(acceptHeader, "application/json")
+        XCTAssertEqual(request.urlRequest?.httpMethod, "PUT")
+        XCTAssertEqual(requestBody, body)
+        
+        assertRequestURLStructure(request: request, base: baseApiURL, path: path)
+        assertBearerToken(request: request)
+    }
+    
     func testEventsMember() {
         let appGuid = "abc123"
         let path = "/v2/events"

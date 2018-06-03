@@ -10,6 +10,7 @@ public enum CFRequest: URLRequestConvertible {
     case apps(String, Int, String)
     case appSummary(String)
     case appStats(String)
+    case appUpdate(String, [String:String])
     //TODO: case spaces(String) // Spaces for org
     case appSpaces([String])
     case events(String)
@@ -49,6 +50,8 @@ public enum CFRequest: URLRequestConvertible {
             return "/v2/apps/\(guid)/summary"
         case .appStats(let guid):
             return "/v2/apps/\(guid)/stats"
+        case .appUpdate(let guid, _):
+            return "/v2/apps/\(guid)"
         case .appSpaces:
             return "/v2/spaces"
         case .events:
@@ -71,6 +74,8 @@ public enum CFRequest: URLRequestConvertible {
         switch self {
         case .tokenGrant, .tokenRefresh:
             return .post
+        case .appUpdate(_, _):
+            return .put
         default:
             return .get
         }
@@ -86,6 +91,8 @@ public enum CFRequest: URLRequestConvertible {
             return tokenURLRequest(params: refreshParams)
         case .apps(let orgGuid, let page, let searchText):
             return appsURLRequest(orgGuid, page: page, searchText: searchText) as URLRequest
+        case .appUpdate(let guid, let params):
+            return appUpdateRequest(guid, params: params) as URLRequest
         case .appSpaces(let appGuids):
             return spacesURLRequest(appGuids) as URLRequest
         case .events(let appGuid):
@@ -146,6 +153,13 @@ public enum CFRequest: URLRequestConvertible {
         }
         
         return request as! NSMutableURLRequest
+    }
+    
+    func appUpdateRequest(_ appGuid: String, params: [String:String]) -> URLRequest {
+        var mutableURLRequest = cfURLRequest()
+        mutableURLRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        return try! Alamofire.JSONEncoding.default.encode(mutableURLRequest, with: params)
     }
     
     func spacesURLRequest(_ appGuids: [String]) -> NSMutableURLRequest {
