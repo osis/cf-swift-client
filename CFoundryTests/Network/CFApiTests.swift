@@ -307,6 +307,36 @@ class CFApiTests: CFModelTestBase {
         waitForExpectations(timeout: 1.0, handler: nil)
     }
     
+    func testAppStopSuccess() {
+        _ = stubWithFile(filename: "app_summary", condition: isMethodPUT())
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "App Stop success callback")
+        CFApi.appStop(appGuid: "testGuid") { (app, error) in
+            XCTAssertNotNil(app)
+            XCTAssertNil(error)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
+    func testAppStopError() {
+        stubWithObject(statusCode: 500, jsonObject: [], isMethod: isMethodPUT())
+        
+        CFApi.session = CFAccountFactory.session()
+        
+        let exp = expectation(description: "App Stop error callback")
+        CFApi.appStop(appGuid: "testGuid") { (app, error) in
+            XCTAssertNotNil(error)
+            XCTAssertNil(app)
+            exp.fulfill()
+        }
+        
+        waitForExpectations(timeout: 1.0, handler: nil)
+    }
+    
     func testEventsSuccess() {
         stubWithFile(filename: "events")
         

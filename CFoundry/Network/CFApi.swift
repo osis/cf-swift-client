@@ -69,6 +69,12 @@ public class CFApi {
         performObjectRequest(t: CFAppStats.self, cfRequest: appStatsRequest, completed: completed)
     }
     
+    public static func appStop(appGuid: String, completed: @escaping (_ app: CFApp?, _ error: Error?) -> Void) {
+        let request = CFRequest.appUpdate(appGuid, ["state": "STOPPED"])
+        
+        performObjectRequest(t: CFApp.self, cfRequest: request, completed: completed)
+    }
+    
     public static func events(appGuid: String, completed: @escaping (_ appStats: [CFEvent]?, _ error: Error?) -> Void) {
         let eventsRequest = CFRequest.events(appGuid)
         
